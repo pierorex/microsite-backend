@@ -1,0 +1,14 @@
+version: '2'
+services:
+  db:
+    image: postgres
+
+  microsite:
+    build: .
+    volumes:
+      - .:/docker-app
+    ports:
+      - "8000:8000"
+    links:
+      - db
+    command: bash /docker-app/entrypoint.sh
