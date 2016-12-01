@@ -2,7 +2,18 @@ version: '2'
 services:
   db:
     image: postgres
-
+  os-viewer:
+    image: openspending/os-viewer
+    environment:
+      - API_URL=http://next.openspending.org
+      - OS_EXTERNAL_ADDRESS=http://next.openspending.org
+      - OS_VIEWER_API_HOST=http://next.openspending.org
+      - OS_VIEWER_AUTH_HOST=http://next.openspending.org
+      - OS_VIEWER_SEARCH_HOST=http://next.openspending.org
+    #volumes:
+    #  - ./os-viewer:/usr/src/app
+    ports:
+      - "8887:8000"
   microsite:
     build: .
     volumes:
