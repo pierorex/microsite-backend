@@ -29,6 +29,7 @@ class Microsite(models.Model):
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'))
 
+
     def __str__(self):
         return '{}'.format(self.name)
 
@@ -40,18 +41,28 @@ class Microsite(models.Model):
 class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
-    primary_color = models.CharField(max_length=20,
-                                     verbose_name=_('Primary Color'))
-    secondary_color = models.CharField(max_length=20,
-                                       verbose_name=_('Secondary Color'))
-    font = models.CharField(max_length=50, verbose_name=_('Font'))
-    # shapes = ? (e.g. button)  --- Eh.. what? xD
-    # languages = ?  CharField with choices or a new model for languages and datasets get related to the languages they've been translated into?
-    # layout = ?
-    # visualizations = ?
+    brand_color = models.CharField(max_length=20,
+                                     verbose_name=_('Brand Color'))
+    sidebar_color = models.CharField(max_length=20,
+                                       verbose_name=_('Sidebar Color'))
+    content_color = models.CharField(max_length=20,
+                                       verbose_name=_('Content Color'))
+
+    def json(self):
+        return json.dumps({
+            brand_color: self.brand_color,
+            sidebar_color: self.sidebar_color,
+            content_color: self.content_color
+        })
+
+    def create_theme_file(self):
+        theme_file = open('{}.json'.format(self.__str__()), 'w')
+        theme_file.write(self.json())
+        theme_file.save()
+        theme_file.close()
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return '{}.{}'.format(self.microsite.name, self.name)
 
     class Meta:
         verbose_name = _('Theme')
