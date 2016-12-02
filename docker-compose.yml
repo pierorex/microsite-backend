@@ -2,24 +2,25 @@ version: '2'
 services:
   db:
     image: postgres
+
   os-viewer:
-    image: openspending/os-viewer
+    image: openspending/os-viewer:latest
     environment:
-      - API_URL=http://next.openspending.org
-      - OS_EXTERNAL_ADDRESS=http://next.openspending.org
-      - OS_VIEWER_API_HOST=http://next.openspending.org
-      - OS_VIEWER_AUTH_HOST=http://next.openspending.org
-      - OS_VIEWER_SEARCH_HOST=http://next.openspending.org
+      - OS_VIEWER_BASE_PATH=''
     #volumes:
-    #  - ./os-viewer:/usr/src/app
+    #  - ./os_viewer_themes:/app/app/config/themes
     ports:
-      - "8887:8000"
+      - "8000:8000"
+
   microsite:
     build: .
     volumes:
       - .:/docker-app
     ports:
-      - "8000:8000"
+      - "8001:8000"
     links:
       - db
+    environment:
+      - OS_VIEWER_THEMES_FOLDER=os_viewer_themes
+      - OS_VIEWER_HOST=http://next.openspending.org/viewer
     command: bash /docker-app/entrypoint.sh
