@@ -123,3 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# OS Viewer
+OS_VIEWER_THEMES_FOLDER = os.environ['OS_VIEWER_THEMES_FOLDER']
+OS_VIEWER_HOST = os.environ['OS_VIEWER_HOST']
