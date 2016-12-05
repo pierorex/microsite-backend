@@ -29,7 +29,6 @@ class Microsite(models.Model):
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'))
 
-
     def __str__(self):
         return '{}'.format(self.name)
 
@@ -42,11 +41,11 @@ class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
     brand_color = models.CharField(max_length=20,
-                                     verbose_name=_('Brand Color'))
+                                   verbose_name=_('Brand Color'), default="#FFFFFF")
     sidebar_color = models.CharField(max_length=20,
-                                       verbose_name=_('Sidebar Color'))
+                                     verbose_name=_('Sidebar Color'), default="#888888")
     content_color = models.CharField(max_length=20,
-                                       verbose_name=_('Content Color'))
+                                     verbose_name=_('Content Color'), default="#222222")
 
     def json(self):
         return json.dumps({
@@ -96,21 +95,23 @@ class Dataset(models.Model):
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
     url = models.URLField(verbose_name=_('URL'))
     viz_type = models.CharField(max_length=200,
-                                choices=(('TreeMap', 'TreeMap'), ),
+                                choices=(('TreeMap', 'TreeMap'),),
                                 verbose_name=_('Visualization Type'))
     available_measures = \
         models.ManyToManyField(Measure,
                                verbose_name=_('Available Measures'),
                                related_name='available_datasets')
     selected_measures = \
-        models.ManyToManyField(Measure, verbose_name=_('Selected Measures'))  # TODO: find a way to only show the ones that exist on the *measures* field
+        models.ManyToManyField(Measure, verbose_name=_(
+            'Selected Measures'))  # TODO: find a way to only show the ones that exist on the *measures* field
     available_hierarchies = \
         models.ManyToManyField(Hierarchy,
                                verbose_name=_('Available Hierarchies'),
                                related_name='available_datasets')
     selected_hierarchies = \
         models.ManyToManyField(Hierarchy,
-                               verbose_name=_('Selected Hierarchies'))  # TODO: find a way to only show the ones that exist on the *hierarchies* field
+                               verbose_name=_(
+                                   'Selected Hierarchies'))  # TODO: find a way to only show the ones that exist on the *hierarchies* field
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
 
