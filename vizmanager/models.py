@@ -110,7 +110,7 @@ class Dataset(models.Model):
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
     code = models.CharField(max_length=200, verbose_name=_('Code'))
     viz_type = models.CharField(max_length=200,
-                                choices=(('TreeMap', 'TreeMap'),),
+                                choices=(('Treemap', 'Treemap'),),
                                 verbose_name=_('Visualization Type'))
     available_measures = \
         models.ManyToManyField(Measure,
@@ -142,7 +142,8 @@ class Dataset(models.Model):
             'lang': 'en', 
             'theme': self.microsite.selected_theme,
             'measure': 'Amount.sum',
-            'order': 'Amount.sum|desc'
+            'order': 'Amount.sum|desc',
+            'visualizations': self.viz_type
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))
 
