@@ -31,6 +31,9 @@ class Microsite(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'))
+    selected_theme = models.ForeignKey("Theme", blank=True, null=True,
+                                       related_name="mock_microsite")
+
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -111,30 +114,33 @@ class Dataset(models.Model):
                                 verbose_name=_('Visualization Type'))
     available_measures = \
         models.ManyToManyField(Measure,
+                               blank=True,
                                verbose_name=_('Available Measures'),
-                               related_name='available_datasets')
+                               related_name=_('available_datasets'))
     selected_measures = \
-        models.ManyToManyField(Measure, verbose_name=_(
-            'Selected Measures'))  # TODO: find a way to only show the ones that exist on the *measures* field
+        models.ManyToManyField(Measure,  # TODO: find a way to only show the ones that exist on the *measures* field
+                               blank=True,
+                               verbose_name=_('Selected Measures'))
     available_hierarchies = \
         models.ManyToManyField(Hierarchy,
+                               blank=True,
                                verbose_name=_('Available Hierarchies'),
-                               related_name='available_datasets')
+                               related_name=_('available_datasets'))
     selected_hierarchies = \
-        models.ManyToManyField(Hierarchy,
-                               verbose_name=_(
-                                   'Selected Hierarchies'))  # TODO: find a way to only show the ones that exist on the *hierarchies* field
+        models.ManyToManyField(Hierarchy,  # TODO: find a way to only show the ones that exist on the *hierarchies* field
+                               blank=True,
+                               verbose_name=_('Selected Hierarchies'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
 
     def embed_url(self):
         url = '{os_viewer_host}/embed/{code}?'.format(
             os_viewer_host=settings.OS_VIEWER_HOST,
-            code=self.dataset.code
+            code=self.code
         )
         params = {
             'lang': 'en', 
-            'theme': self.selected_theme,
+            'theme': self.microsite.selected_theme,
             'measure': 'Amount.sum',
             'order': 'Amount.sum|desc'
         }
