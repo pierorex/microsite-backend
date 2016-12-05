@@ -1,0 +1,6 @@
+{% for dataset in microsite.dataset_set.all %}
+  <iframe src="{{ dataset.embed_url }}" width="960" height="450" border="0" frameborder="0" seamless="on" style="border: 0px; margin: 0px; padding: 0px;"></iframe>
+  <hr>
+{% endfor %}
+
+<!-- here goes code for disquss -->
