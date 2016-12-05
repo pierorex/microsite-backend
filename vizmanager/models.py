@@ -1,7 +1,9 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from microsite_backend import settings
 import urllib
+import json
 
 
 class Municipality(models.Model):
@@ -42,17 +44,20 @@ class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
     brand_color = models.CharField(max_length=20,
-                                   verbose_name=_('Brand Color'), default="#FFFFFF")
+                                   verbose_name=_('Brand Color'),
+                                   default="#FFFFFF")
     sidebar_color = models.CharField(max_length=20,
-                                     verbose_name=_('Sidebar Color'), default="#888888")
+                                     verbose_name=_('Sidebar Color'),
+                                     default="#888888")
     content_color = models.CharField(max_length=20,
-                                     verbose_name=_('Content Color'), default="#222222")
+                                     verbose_name=_('Content Color'),
+                                     default="#222222")
 
     def json(self):
         return json.dumps({
-            brand_color: self.brand_color,
-            sidebar_color: self.sidebar_color,
-            content_color: self.content_color
+            "brand_color": self.brand_color,
+            "sidebar_color": self.sidebar_color,
+            "content_color": self.content_color
         })
 
     def create_theme_file(self):
@@ -125,7 +130,7 @@ class Dataset(models.Model):
     def embed_url(self):
         url = '{os_viewer_host}/embed/{code}?'.format(
             os_viewer_host=settings.OS_VIEWER_HOST,
-            code=dataset.code
+            code=self.dataset.code
         )
         params = {
             'lang': 'en', 
