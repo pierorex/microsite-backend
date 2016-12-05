@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from django.views.generic import DetailView
+from vizmanager.models import Microsite
 
-# Create your views here.
+
+class MicrositeDetailView(DetailView):
+    model = Microsite
