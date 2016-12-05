@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+import urllib
 
 
 class Municipality(models.Model):
@@ -55,10 +56,16 @@ class Theme(models.Model):
         })
 
     def create_theme_file(self):
-        theme_file = open('{}.json'.format(self.__str__()), 'w')
+        file_path = '{folder}/{filename}.json'.format(
+            folder=settings.OS_VIEWER_THEMES_FOLDER,
+            filename=self.__str__())
+        theme_file = open(file_path, 'w')
         theme_file.write(self.json())
-        theme_file.save()
         theme_file.close()
+
+    def save(self, *args, **kwargs):
+        self.create_theme_file()
+        super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}.{}'.format(self.microsite.name, self.name)
@@ -93,7 +100,7 @@ class Hierarchy(models.Model):
 class Dataset(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
-    url = models.URLField(verbose_name=_('URL'))
+    code = models.CharField(max_length=200, verbose_name=_('Code'))
     viz_type = models.CharField(max_length=200,
                                 choices=(('TreeMap', 'TreeMap'),),
                                 verbose_name=_('Visualization Type'))
@@ -114,6 +121,24 @@ class Dataset(models.Model):
                                    'Selected Hierarchies'))  # TODO: find a way to only show the ones that exist on the *hierarchies* field
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
+
+    def embed_url(self):
+        url = '{os_viewer_host}/embed/{code}?'.format(
+            os_viewer_host=settings.OS_VIEWER_HOST,
+            code=dataset.code
+        )
+        params = {
+            'lang': 'en', 
+            'theme': self.selected_theme,
+            'measure': 'Amount.sum',
+            'order': 'Amount.sum|desc'
+        }
+        return '{}{}'.format(url, urllib.parse.urlencode(params))
+
+    def save(self, *args, **kwargs):
+        # TODO: get all available measures and hierarchies from OS API and add
+        # them to this instance
+        super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}'.format(self.name)
