@@ -23,4 +23,5 @@ services:
     environment:
       - OS_VIEWER_THEMES_FOLDER=os_viewer_themes
       - OS_VIEWER_HOST=http://next.openspending.org/viewer
+      - OS_VIEWER_HOST=http://next.openspending.org/api/3/cubes/{}/model
     command: bash /docker-app/entrypoint.sh

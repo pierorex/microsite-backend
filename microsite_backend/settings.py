@@ -123,6 +123,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 
-# OS Viewer
-OS_VIEWER_THEMES_FOLDER = os.environ['OS_VIEWER_THEMES_FOLDER']
-OS_VIEWER_HOST = os.environ['OS_VIEWER_HOST']
+# Open Spending
+try:  # using Docker
+    OS_VIEWER_THEMES_FOLDER = os.environ['OS_VIEWER_THEMES_FOLDER']
+    OS_VIEWER_HOST = os.environ['OS_VIEWER_HOST']
+    OS_MODEL_ENDPOINT = os.environ['OS_MODEL_ENDPOINT']
+except KeyError:  # not using Docker
+    OS_VIEWER_THEMES_FOLDER = 'os_viewer_themes'
+    OS_VIEWER_HOST = 'http://next.openspending.org/viewer'
+    OS_MODEL_ENDPOINT = 'http://next.openspending.org/api/3/cubes/{}/model'
