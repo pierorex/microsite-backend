@@ -19,6 +19,9 @@ class Municipality(models.Model):
 
 
 class Profile(models.Model):
+    """
+    Class to add extra data to Django's user model
+    """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'))
@@ -57,6 +60,10 @@ class Theme(models.Model):
                                      default="#222222")
 
     def json(self):
+        """
+        Build the json representation of this theme that is needed by OS Viewer
+        :return: JSON string
+        """
         return json.dumps({
             "brand_color": self.brand_color,
             "sidebar_color": self.sidebar_color,
@@ -64,6 +71,11 @@ class Theme(models.Model):
         })
 
     def create_theme_file(self):
+        """
+        Create the file representing this theme and save it to OS Viewer's
+        themes folder
+        :return: None
+        """
         file_path = '{folder}/{filename}.json'.format(
             folder=settings.OS_VIEWER_THEMES_FOLDER,
             filename=self.__str__())
@@ -72,6 +84,12 @@ class Theme(models.Model):
         theme_file.close()
 
     def save(self, *args, **kwargs):
+        """
+        Prior to saving the theme, create its theme file
+        :param args: default args
+        :param kwargs: default kwargs
+        :return: None
+        """
         self.create_theme_file()
         super(self.__class__, self).save(*args, **kwargs)
 
@@ -134,6 +152,10 @@ class Dataset(models.Model):
                                       verbose_name=_('Show Tables?'))
 
     def embed_url(self):
+        """
+        Build URL to get to this dataset in OS Viewer
+        :return: URL string
+        """
         url = '{os_viewer_host}/embed/{code}?'.format(
             os_viewer_host=settings.OS_VIEWER_HOST,
             code=self.code
