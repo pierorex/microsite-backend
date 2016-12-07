@@ -37,7 +37,10 @@ class Microsite(models.Model):
                                      verbose_name=_('Municipality'))
     selected_theme = models.ForeignKey("Theme", blank=True, null=True,
                                        related_name="mock_microsite")
-
+    language = models.CharField(max_length=2, default='en',
+                                choices=(('en','en'), ('de','de'),
+                                         ('es','es'),),
+                                verbose_name=_('Language'))
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -177,9 +180,9 @@ class Dataset(models.Model):
             code=self.code
         )
         params = {
-            'lang': 'en', 
+            'lang': self.microsite.language,
             'theme': self.microsite.selected_theme,
-            # 'measure': 'Amount.sum',
+            # 'measure': 'Amount.sum',  # TODO
             #'order': 'Amount.sum|desc',
             'visualizations': self.viz_type
         }
