@@ -179,8 +179,8 @@ class Dataset(models.Model):
         params = {
             'lang': 'en', 
             'theme': self.microsite.selected_theme,
-            'measure': 'Amount.sum',
-            'order': 'Amount.sum|desc',
+            # 'measure': 'Amount.sum',
+            #'order': 'Amount.sum|desc',
             'visualizations': self.viz_type
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))
