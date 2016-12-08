@@ -12,7 +12,7 @@ class Municipality(models.Model):
     country = models.CharField(max_length=200, verbose_name=_('Country'))
 
     def __str__(self):
-        return "{}".format(self.name)
+        return '{}'.format(self.name)
 
     class Meta:
         verbose_name = _('Municipality')
@@ -35,12 +35,13 @@ class Microsite(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     municipality = models.ForeignKey(Municipality,
                                      verbose_name=_('Municipality'))
-    selected_theme = models.ForeignKey("Theme", blank=True, null=True,
-                                       related_name="mock_microsite")
+    selected_theme = models.ForeignKey('Theme', blank=True, null=True,
+                                       related_name='mock_microsite')
     language = models.CharField(max_length=2, default='en',
                                 choices=(('en','en'), ('de','de'),
                                          ('es','es'),),
                                 verbose_name=_('Language'))
+    forum = models.CharField(default='', choices=(('Disqus','Disqus'),))
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -50,18 +51,31 @@ class Microsite(models.Model):
         verbose_name_plural = _('Microsites')
 
 
+class Forum(models.Model):
+    microsite = models.OneToOneField(Microsite)
+
+    def disqus_url(self):
+        raise NotImplementedError
+
+    def disqus_title(self):
+        raise NotImplementedError
+
+    def disqus_identifier(self):
+        raise NotImplementedError
+
+
 class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
     brand_color = models.CharField(max_length=20,
                                    verbose_name=_('Brand Color'),
-                                   default="#FFFFFF")
+                                   default='#FFFFFF')
     sidebar_color = models.CharField(max_length=20,
                                      verbose_name=_('Sidebar Color'),
-                                     default="#888888")
+                                     default='#888888')
     content_color = models.CharField(max_length=20,
                                      verbose_name=_('Content Color'),
-                                     default="#222222")
+                                     default='#222222')
 
     def json(self):
         """
@@ -69,9 +83,9 @@ class Theme(models.Model):
         :return: JSON string
         """
         return json.dumps({
-            "brand_color": self.brand_color,
-            "sidebar_color": self.sidebar_color,
-            "content_color": self.content_color
+            'brand_color': self.brand_color,
+            'sidebar_color': self.sidebar_color,
+            'content_color': self.content_color
         })
 
     def create_theme_file(self):
