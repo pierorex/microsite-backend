@@ -41,9 +41,10 @@ class Microsite(models.Model):
                                 choices=(('en','en'), ('de','de'),
                                          ('es','es'),),
                                 verbose_name=_('Language'))
-    forum_platform = models.CharField(max_length=20, default='',
+    forum_platform = models.CharField(max_length=20, default='Disqus',
                                       verbose_name=_('Forum'),
-                                      choices=(('Disqus','Disqus'),))
+                                      choices=(('Disqus','Disqus'),
+                                               ('No','No')))
 
     def create_forum(self):
         self.forum = Forum()
