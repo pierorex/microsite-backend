@@ -17,7 +17,7 @@ services:
     volumes:
       - .:/docker-app
     ports:
-      - "8001:8000"
+      - "8000:8000"
     links:
       - db
     environment:
