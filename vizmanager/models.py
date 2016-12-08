@@ -215,7 +215,7 @@ class Dataset(models.Model):
             'lang': self.microsite.language,
             'theme': self.microsite.selected_theme,
             # 'measure': 'Amount.sum',  # TODO
-            #'order': 'Amount.sum|desc',
+            # 'order': 'Amount.sum|desc',
             'visualizations': self.viz_type
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))

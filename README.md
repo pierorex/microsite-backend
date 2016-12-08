@@ -50,10 +50,10 @@ http://localhost:8000/admin and the frontend for each microsite should be at
   the code you get from OpenSpending when you upload the dataset there.
   <br>
   E.g., if you can see your dataset here: 
-  ```bash
+  ```
   http://next.openspending.org/viewer/23cdc48554ae8648deff7837c025d8c0:kpai2016
   ```
   Then your Dataset's code is:
-  ```bash
+  ```
   23cdc48554ae8648deff7837c025d8c0:kpai2016
   ```
