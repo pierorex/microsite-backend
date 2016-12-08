@@ -41,7 +41,23 @@ class Microsite(models.Model):
                                 choices=(('en','en'), ('de','de'),
                                          ('es','es'),),
                                 verbose_name=_('Language'))
-    forum = models.CharField(default='', choices=(('Disqus','Disqus'),))
+    forum_platform = models.CharField(max_length=20, default='',
+                                      verbose_name=_('Forum'),
+                                      choices=(('Disqus','Disqus'),))
+
+    def create_forum(self):
+        self.forum = Forum()
+        self.forum.save()
+
+    def save(self, *args, **kwargs):
+        """
+        Prior to saving the Microsite, create its Forum
+        :param args: default args
+        :param kwargs: default kwargs
+        :return: None
+        """
+        self.create_forum()
+        super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -54,14 +70,15 @@ class Microsite(models.Model):
 class Forum(models.Model):
     microsite = models.OneToOneField(Microsite)
 
-    def disqus_url(self):
-        raise NotImplementedError
+    #def disqus_url(self):
+    #    raise NotImplementedError
 
     def disqus_title(self):
-        raise NotImplementedError
+        return '{}'.format(self.microsite.name)
 
     def disqus_identifier(self):
-        raise NotImplementedError
+        # TODO: disambiguation for multiple instances of the Microsite service
+        return 'openbudgets-microsite-disqus-{}'.format(self.microsite.pk)
 
 
 class Theme(models.Model):
