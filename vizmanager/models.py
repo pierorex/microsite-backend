@@ -45,6 +45,12 @@ class Microsite(models.Model):
                                       verbose_name=_('Forum'),
                                       choices=(('Disqus','Disqus'),
                                                ('No','No')))
+    layout = models.CharField(max_length=200,
+                              default='datasets list, forum right',
+                              choices=(('datasets list, forum right',
+                                        'datasets list, forum right'),
+                                       ('datasets list, forum bottom',
+                                        'datasets list, forum bottom'),))
 
     def create_forum(self):
         self.forum = Forum()
@@ -57,7 +63,8 @@ class Microsite(models.Model):
         :param kwargs: default kwargs
         :return: None
         """
-        self.create_forum()
+        if not self.forum:
+            self.create_forum()
         super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -161,46 +168,14 @@ class Hierarchy(models.Model):
 
 class Dataset(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
-    microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
+    microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'),
+                                  null=True, blank=True)
     code = models.CharField(max_length=200, verbose_name=_('Code'))
     viz_type = models.CharField(max_length=200,
                                 choices=(('Treemap', 'Treemap'),),
                                 verbose_name=_('Visualization Type'))
-    height = models.IntegerField(default=450, verbose_name=_('Height'))
-    width = models.IntegerField(default=960, verbose_name=_('Width'))
-    available_measures = \
-        models.ManyToManyField(Measure,
-                               blank=True,
-                               verbose_name=_('Available Measures'),
-                               related_name=_('available_datasets'))
-    selected_measures = \
-        models.ManyToManyField(Measure,  # TODO: find a way to only show the ones that exist on the *measures* field
-                               blank=True,
-                               verbose_name=_('Selected Measures'))
-    available_hierarchies = \
-        models.ManyToManyField(Hierarchy,
-                               blank=True,
-                               verbose_name=_('Available Hierarchies'),
-                               related_name=_('available_datasets'))
-    selected_hierarchies = \
-        models.ManyToManyField(Hierarchy,  # TODO: find a way to only show the ones that exist on the *hierarchies* field
-                               blank=True,
-                               verbose_name=_('Selected Hierarchies'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
-
-    def get_hierarchies_and_measures(self):
-        """
-        Call OS Viewer's API to get the hierarchies and measures for this
-        dataset
-        :return: dictionary with keys 'measures' and 'hierarchies'
-        """
-        full_os_model_endpoint = settings.OS_MODEL_ENDPOINT.format(self.code)
-        response = requests.get(full_os_model_endpoint)
-        result = dict()
-        result['hierarchies'] = response.json()['model']['hierarchies']
-        result['measures'] = response.json()['model']['measures']
-        return result
 
     def embed_url(self):
         """

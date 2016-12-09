@@ -12,8 +12,8 @@ class MunicipalityAdmin(admin.ModelAdmin):
 
 
 class DatasetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'microsite', 'code', 'viz_type', 'height', 'width',)
-    list_editable = ('microsite', 'code', 'viz_type', 'height', 'width',)
+    list_display = ('name', 'microsite', 'code', 'viz_type',)
+    list_editable = ('microsite', 'code', 'viz_type',)
 
     class Meta:
         model = Dataset
@@ -30,10 +30,10 @@ class ThemeAdmin(admin.ModelAdmin):
 
 
 class MicrositeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'municipality', 'selected_theme', 'language',
-                    'forum_platform',)
+    list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
+                    'forum_platform', 'layout')
     list_editable = ('municipality', 'selected_theme', 'language',
-                     'forum_platform',)
+                     'forum_platform', 'layout')
     readonly_fields = ('id', )
 
     def get_form(self, request, obj=None, **kwargs):
