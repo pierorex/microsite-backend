@@ -1,0 +1,9 @@
+{% if microsite.forum_platform == 'Disqus' %}
+  {% include 'vizmanager/disqus.html' %}
+{% endif %}
+
+{% comment %}
+{% if microsite.forum_platform == 'some_other_forum_platform' %}
+    {% include 'vizmanager/your-forum-name.html' %}
+{% endif %}
+{% endcomment %}
