@@ -47,12 +47,15 @@ class Microsite(models.Model):
                                                ('No','No')))
     layout = models.CharField(max_length=200,
                               default='datasets list, forum right',
+                              verbose_name=_('Layout'),
                               choices=(('datasets list, forum right',
                                         'datasets list, forum right'),
                                        ('datasets list, forum bottom',
                                         'datasets list, forum bottom'),
                                        ('datasets list, forum on flip',
                                         'datasets list, forum on flip'),))
+    stacked_datasets = models.BooleanField(verbose_name=_('Stacked Datasets'),
+                                           default=False)
 
     def create_forum(self):
         self.forum = Forum()
