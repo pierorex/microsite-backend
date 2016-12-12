@@ -31,9 +31,9 @@ class ThemeAdmin(admin.ModelAdmin):
 
 class MicrositeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
-                    'forum_platform', 'layout')
+                    'forum_platform', 'layout', 'stacked_datasets',)
     list_editable = ('municipality', 'selected_theme', 'language',
-                     'forum_platform', 'layout')
+                     'forum_platform', 'layout', 'stacked_datasets',)
     readonly_fields = ('id', )
 
     def get_form(self, request, obj=None, **kwargs):
