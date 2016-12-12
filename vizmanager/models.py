@@ -50,7 +50,9 @@ class Microsite(models.Model):
                               choices=(('datasets list, forum right',
                                         'datasets list, forum right'),
                                        ('datasets list, forum bottom',
-                                        'datasets list, forum bottom'),))
+                                        'datasets list, forum bottom'),
+                                       ('datasets list, forum on flip',
+                                        'datasets list, forum on flip'),))
 
     def create_forum(self):
         self.forum = Forum()

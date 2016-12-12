@@ -1,0 +1,23 @@
+<div class="ui equal width grid">
+  <div class="stretched row">
+    <div class="column">
+      <button class="ui positive button"
+              ng-click="isFlipped=!isFlipped">
+        Go to discussion!
+      </button>
+      <div class="ui segment">
+        <div class="flip">
+          <div class="card"
+               ng-class="{'flipped':isFlipped}">
+            <div class="face front" id="dataset-list">
+              {% include 'vizmanager/dataset_list.html' %}
+            </div>
+            <div class="face back" id="forum">
+              {% include 'vizmanager/forum.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

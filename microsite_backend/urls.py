@@ -24,3 +24,6 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^vizmanager/', include('vizmanager.urls', namespace='vizmanager')),
 ]
+
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+urlpatterns += staticfiles_urlpatterns()

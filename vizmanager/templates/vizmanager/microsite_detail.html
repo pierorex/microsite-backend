@@ -1,12 +1,17 @@
-<html>
-  <body>
+<html ng-app="MicrositeApp">
+  <body ng-controller="MainViewController">
     {% with template_name=microsite.layout|add:'.html' %}
       {% include 'vizmanager/'|add:template_name %}
     {% endwith %}
   </body>
 
   <footer>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.js"></script>
+    {% load static from static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.css"/>
+    <link rel="stylesheet" href="{% static 'css/flip.css' %}"/>
+    <script src="{% static 'js/libs/jquery/3.1.1/jquery.min.js' %}"></script>
+    <script src="{% static 'js/libs/semantic-ui/2.2.6/semantic.js' %}"></script>
+    <script src="{% static 'js/libs/angular/1.6.0-rc2/angular.min.js' %}"></script>
+    <script src="{% static 'js/app.js' %}"></script>
   </footer>
 </html>
