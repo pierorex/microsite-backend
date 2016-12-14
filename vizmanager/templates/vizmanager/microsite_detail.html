@@ -1,5 +1,6 @@
+<!DOCTYPE html>
 <html ng-app="MicrositeApp">
-  <body ng-controller="MainViewController">
+  <body ng-controller="MainViewController" style="min-height: 100%">
     {# Trick to include the template corresponding to the layout selected for the microsite #}
     {% with template_name=microsite.layout|add:'.html' %}
       {% include 'vizmanager/'|add:template_name %}
@@ -9,7 +10,7 @@
   <footer>
     {% load static from static %}
     {# include 'vizmanager/footer.html' TODO #}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.6/semantic.css"/>
+    <link rel="stylesheet" href="{% static 'css/libs/semantic-ui/2.2.6/semantic.css' %}"/>
     <link rel="stylesheet" href="{% static 'css/flip.css' %}"/>
     <script src="{% static 'js/libs/jquery/3.1.1/jquery.min.js' %}"></script>
     <script src="{% static 'js/libs/semantic-ui/2.2.6/semantic.js' %}"></script>

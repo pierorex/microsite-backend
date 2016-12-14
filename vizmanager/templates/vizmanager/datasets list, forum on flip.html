@@ -1,19 +1,20 @@
-<div class="ui equal width grid">
-  <div class="stretched row">
-    <div class="column">
-      <button class="ui positive button"
-              ng-click="isFlipped=!isFlipped">
-        Go to discussion!
-      </button>
+<!-- the button changes the isFlipped variable toggling the flipped class in the card -->
+<button ng-click="isFlipped=!isFlipped" class="ui positive button" style="width: 100%">
+  Go to discussion!
+</button>
+<div class="ui equal wide grid">
+  <div class="row">
+    <div class="stretched column">
       <div class="ui segment">
         <div class="flip">
-          <div class="card"
-               ng-class="{'flipped':isFlipped}">
+          <div ng-class="{'flipped':isFlipped}" class="card">
             <div class="face front" id="dataset-list">
               {% include 'vizmanager/dataset_list.html' %}
             </div>
             <div class="face back" id="forum">
-              {% include 'vizmanager/forum.html' %}
+              <div class="ui segment" style="background: white; height: 5000px">  <!--trick to avoid bad rendering using the flip effect-->
+                {% include 'vizmanager/forum.html' %}
+              </div>
             </div>
           </div>
         </div>

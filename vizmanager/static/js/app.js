@@ -1,5 +1,8 @@
 var MicrositeApp = angular.module('MicrositeApp', []);
 
 MicrositeApp.controller('MainViewController', function MainViewController($scope) {
-  $scope.current_dataset_url = $('#dataset-dropdown')[0].value;
+  dataset_dropdown = $('#dataset-dropdown')[0];
+  if (dataset_dropdown) {
+    $scope.current_dataset_url = dataset_dropdown.value;
+  }
 });
