@@ -1,6 +1,5 @@
 from django.contrib import admin
-from .models import Municipality, Profile, Microsite, Theme, Dataset, Hierarchy, \
-    Measure
+from .models import Municipality, Profile, Microsite, Theme, Dataset
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -15,6 +14,14 @@ class DatasetAdmin(admin.ModelAdmin):
     list_display = ('name', 'microsite', 'code', 'viz_type',)
     list_editable = ('microsite', 'code', 'viz_type',)
 
+    def get_queryset(self, request):
+        # Restrict queryset to only show Datasets belonging to the same
+        # municipality as the user
+        qs = super(self.__class__, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(microsite__municipality=request.user.profile.municipality)
+
     class Meta:
         model = Dataset
 
@@ -24,6 +31,14 @@ class ThemeAdmin(admin.ModelAdmin):
                     'content_color',)
     list_editable = ('microsite', 'brand_color', 'sidebar_color',
                      'content_color',)
+
+    def get_queryset(self, request):
+        # Restrict queryset to only show Themes belonging to the same
+        # municipality as the user
+        qs = super(self.__class__, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(microsite__municipality=request.user.profile.municipality)
 
     class Meta:
         model = Theme
@@ -35,6 +50,14 @@ class MicrositeAdmin(admin.ModelAdmin):
     list_editable = ('municipality', 'selected_theme', 'language',
                      'forum_platform', 'layout', 'stacked_datasets',)
     readonly_fields = ('id', )
+
+    def get_queryset(self, request):
+        # Restrict queryset to only show Microsites belonging to the same
+        # municipality as the user
+        qs = super(self.__class__, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(municipality=request.user.profile.municipality)
 
     def get_form(self, request, obj=None, **kwargs):
         # Trick to allow filtering the selected_theme drop-down to only show
