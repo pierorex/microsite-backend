@@ -4,6 +4,28 @@ Software-as-a-Service (SaaS) solution that will allow their citizens to
 visualize, interact and discuss about Budget and Spending of their towns, cities
 and countries. 
 
+
+##For Administrators
+###Create users for municipalities
+- To create a new user for a municipality, follow these steps:
+  - Go to the administration site (http://<your-url>/admin)
+  - Create Profile:
+    - Click "Add" on the Profile section.
+    - Click the green plus sign to add a new user and actually add a one.
+  - Assign permissions to the user:
+    - Click the pencil to edit this new user, tick the is_superuser box. 
+    - Add the following permissions:
+      - Add/change/delete Dataset
+      - Add/change/delete Microsite
+      - Add/change/delete Theme
+    - Save changes.
+  - Assign the user to a municipality:  
+    - Choose or create new municipality. This determines the content this user 
+      has access to by filtering content in the admin site according to his/her 
+      municipality.
+  - Save changes.
+
+
 ##For Developers / DevOps
 ###Run locally
 ```bash
@@ -32,6 +54,7 @@ http://localhost:8000/admin and the frontend for each microsite should be at
   there are users commenting without an account, this will require a moderator 
   to approve their comments.
   
+
 ##For Municipalities
 ###Workflow
 - First, you create a new Municipality inside the Administration Site. 
