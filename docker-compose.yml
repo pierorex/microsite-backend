@@ -1,7 +1,17 @@
 version: '2'
 services:
-  db:
+  postgres:
     image: postgres
+    volumes:
+        - data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=changeme
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=lux_dev
+    networks:
+      - main
 
   os-viewer:
     image: openspending/os-viewer:latest
@@ -11,17 +21,30 @@ services:
     #  - ./os_viewer_themes:/app/app/config/themes
     ports:
       - "8001:8000"
+    networks:
+      - main
 
   microsite:
     build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    restart: always
     volumes:
-      - .:/docker-app
+      - .:/app
+    ports:
+      - "8000:8000"
     ports:
       - "8000:8000"
     links:
-      - db
+      - postgres
     environment:
       - OS_VIEWER_THEMES_FOLDER=os_viewer_themes
       - OS_VIEWER_HOST=http://next.openspending.org/viewer
       - OS_VIEWER_HOST=http://next.openspending.org/api/3/cubes/{}/model
-    command: bash /docker-app/entrypoint.sh
+    networks:
+      - main
+
+volumes:
+  data:
+
+networks:
+  main:
