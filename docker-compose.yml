@@ -6,11 +6,11 @@ services:
   os-viewer:
     image: openspending/os-viewer:latest
     environment:
-      - OS_VIEWER_BASE_PATH=''
+      - "OS_VIEWER_BASE_PATH="
     #volumes:
     #  - ./os_viewer_themes:/app/app/config/themes
     ports:
-      - "8000:8000"
+      - "8001:8000"
 
   microsite:
     build: .
