@@ -10,41 +10,28 @@ services:
       - POSTGRES_PASSWORD=changeme
       - POSTGRES_USER=postgres
       - POSTGRES_DB=lux_dev
-    networks:
-      - main
 
   os-viewer:
-    image: openspending/os-viewer:latest
+    build:
+      context: ./osviewer
     environment:
       - "OS_VIEWER_BASE_PATH="
-    #volumes:
-    #  - ./os_viewer_themes:/app/app/config/themes
+    volumes:
+      - ./os_viewer_themes:/app/app/config/themes
     ports:
-      - "8001:8000"
-    networks:
-      - main
+      - "5000:5000"
 
   microsite:
     build: .
     command: python3 manage.py runserver 0.0.0.0:8000
     restart: always
     volumes:
-      - .:/app
+      - .:/usr/src/app
     ports:
       - "8000:8000"
-    ports:
-      - "8000:8000"
-    links:
-      - postgres
     environment:
       - OS_VIEWER_THEMES_FOLDER=os_viewer_themes
-      - OS_VIEWER_HOST=http://next.openspending.org/viewer
-      - OS_VIEWER_HOST=http://next.openspending.org/api/3/cubes/{}/model
-    networks:
-      - main
+      - OS_VIEWER_HOST=http://localhost:5000
 
 volumes:
   data:
-
-networks:
-  main:

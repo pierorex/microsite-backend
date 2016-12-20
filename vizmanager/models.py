@@ -2,7 +2,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from microsite_backend import settings
-import requests
 import urllib
 import json
 
@@ -191,6 +190,7 @@ class Dataset(models.Model):
             os_viewer_host=settings.OS_VIEWER_HOST,
             code=self.code
         )
+        print('{}'.format(settings.OS_VIEWER_HOST))
         params = {
             'lang': self.microsite.language,
             'theme': self.microsite.selected_theme,
