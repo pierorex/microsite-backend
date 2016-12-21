@@ -22,6 +22,17 @@ class DatasetAdmin(admin.ModelAdmin):
             return qs
         return qs.filter(microsite__municipality=request.user.profile.municipality)
 
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Restrict select box to only show microsites related to the same
+        # municipality as the user
+        if request.user.is_superuser:
+            return super(self.__class__, self)\
+                .formfield_for_foreignkey(db_field, request, **kwargs)
+        if db_field.name == 'microsite':
+            kwargs["queryset"] = Microsite.objects.filter(
+                municipality=request.user.profile.municipality)
+        return super(self.__class__, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
     class Meta:
         model = Dataset
 
@@ -38,7 +49,20 @@ class ThemeAdmin(admin.ModelAdmin):
         qs = super(self.__class__, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(microsite__municipality=request.user.profile.municipality)
+        return qs.filter(
+            microsite__municipality=request.user.profile.municipality)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Restrict select box to only show microsites related to the same
+        # municipality as the user
+        if request.user.is_superuser:
+            return super(self.__class__, self)\
+                .formfield_for_foreignkey(db_field, request, **kwargs)
+        if db_field.name == 'microsite':
+            kwargs["queryset"] = Microsite.objects.filter(
+                municipality=request.user.profile.municipality)
+        return super(self.__class__, self)\
+            .formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Meta:
         model = Theme
@@ -47,8 +71,8 @@ class ThemeAdmin(admin.ModelAdmin):
 class MicrositeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
                     'forum_platform', 'layout', 'stacked_datasets',)
-    list_editable = ('municipality', 'selected_theme', 'language',
-                     'forum_platform', 'layout', 'stacked_datasets',)
+    list_editable = ('selected_theme', 'language', 'forum_platform', 'layout',
+                     'stacked_datasets',)
     readonly_fields = ('id', )
 
     def get_queryset(self, request):
@@ -70,11 +94,10 @@ class MicrositeAdmin(admin.ModelAdmin):
         try:
             if db_field.name == 'selected_theme' and self.instance:
                 kwargs['queryset'] = \
-                    Theme.objects.filter(microsite=self.instance.pk)
+                    Theme.objects.filter(microsite=self.instance)
         except:
             pass
-        return ThemeAdmin(admin_site=self.admin_site, model=Theme)\
-            .formfield_for_foreignkey(db_field, request=request, **kwargs)
+        return super(self.__class__, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Meta:
         model = Microsite
