@@ -67,9 +67,9 @@ class Microsite(models.Model):
         :param kwargs: default kwargs
         :return: None
         """
-        if not self.forum:
-            self.create_forum()
         super(self.__class__, self).save(*args, **kwargs)
+        if not hasattr(self, 'forum'):
+            self.create_forum()
 
     def __str__(self):
         return '{}'.format(self.name)
@@ -141,7 +141,7 @@ class Theme(models.Model):
         super(self.__class__, self).save(*args, **kwargs)
 
     def __str__(self):
-        return '{}.{}'.format(self.microsite.name, self.name)
+        return '{}'.format(self.name)
 
     class Meta:
         verbose_name = _('Theme')
@@ -190,7 +190,6 @@ class Dataset(models.Model):
             os_viewer_host=settings.OS_VIEWER_HOST,
             code=self.code
         )
-        print('{}'.format(settings.OS_VIEWER_HOST))
         params = {
             'lang': self.microsite.language,
             'theme': self.microsite.selected_theme,
