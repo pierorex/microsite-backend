@@ -5,7 +5,7 @@ from django.contrib.auth.admin import UserAdmin
 
 
 class UserProfileInline(admin.StackedInline):
-    verbose_name = "Additional information for"
+    verbose_name = 'Additional information for'
     model = Profile
     max_num = 1
     can_delete = False
@@ -42,7 +42,7 @@ class DatasetAdmin(admin.ModelAdmin):
             return super(self.__class__, self)\
                 .formfield_for_foreignkey(db_field, request, **kwargs)
         if db_field.name == 'microsite':
-            kwargs["queryset"] = Microsite.objects.filter(
+            kwargs['queryset'] = Microsite.objects.filter(
                 municipality=request.user.profile.municipality)
         return super(self.__class__, self).formfield_for_foreignkey(db_field, request, **kwargs)
 
@@ -72,7 +72,7 @@ class ThemeAdmin(admin.ModelAdmin):
             return super(self.__class__, self)\
                 .formfield_for_foreignkey(db_field, request, **kwargs)
         if db_field.name == 'microsite':
-            kwargs["queryset"] = Microsite.objects.filter(
+            kwargs['queryset'] = Microsite.objects.filter(
                 municipality=request.user.profile.municipality)
         return super(self.__class__, self)\
             .formfield_for_foreignkey(db_field, request, **kwargs)
@@ -110,7 +110,16 @@ class MicrositeAdmin(admin.ModelAdmin):
                     Theme.objects.filter(microsite=self.instance)
         except:
             pass
-        return super(self.__class__, self).formfield_for_foreignkey(db_field, request, **kwargs)
+
+        if request.user.is_superuser:
+            return super(self.__class__, self)\
+                .formfield_for_foreignkey(db_field, request, **kwargs)
+        if db_field.name == 'municipality':
+            kwargs['queryset'] = Municipality.objects\
+                .filter(id=request.user.profile.municipality_id)
+
+        return super(self.__class__, self)\
+            .formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Meta:
         model = Microsite
