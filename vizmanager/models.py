@@ -37,13 +37,13 @@ class Microsite(models.Model):
     selected_theme = models.ForeignKey('Theme', blank=True, null=True,
                                        related_name='mock_microsite')
     language = models.CharField(max_length=2, default='en',
-                                choices=(('en','en'), ('de','de'),
-                                         ('es','es'),),
+                                choices=(('en', 'en'), ('de', 'de'),
+                                         ('es', 'es'),),
                                 verbose_name=_('Language'))
     forum_platform = models.CharField(max_length=20, default='Disqus',
                                       verbose_name=_('Forum'),
-                                      choices=(('Disqus','Disqus'),
-                                               ('No','No')))
+                                      choices=(('Disqus', 'Disqus'),
+                                               ('No', 'No')))
     layout = models.CharField(max_length=200,
                               default='datasets list, forum right',
                               verbose_name=_('Layout'),
@@ -82,7 +82,7 @@ class Microsite(models.Model):
 class Forum(models.Model):
     microsite = models.OneToOneField(Microsite)
 
-    #def disqus_url(self):
+    # def disqus_url(self):
     #    raise NotImplementedError
 
     def disqus_title(self):

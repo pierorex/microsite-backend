@@ -1,5 +1,18 @@
 from django.contrib import admin
 from .models import Municipality, Profile, Microsite, Theme, Dataset
+from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
+
+
+class UserProfileInline(admin.StackedInline):
+    verbose_name = "Additional information for"
+    model = Profile
+    max_num = 1
+    can_delete = False
+
+
+class ProfileUserAdmin(UserAdmin):
+    inlines = [ UserProfileInline ]
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -103,8 +116,12 @@ class MicrositeAdmin(admin.ModelAdmin):
         model = Microsite
 
 
+# unregister unmodified UserAdmin and register ProfileUserAdmin from above
+admin.site.unregister(User)
+admin.site.register(User, ProfileUserAdmin)
+
+# standard registrations
 admin.site.register(Municipality, MunicipalityAdmin)
-admin.site.register(Profile)
 admin.site.register(Microsite, MicrositeAdmin)
 admin.site.register(Theme, ThemeAdmin)
 admin.site.register(Dataset, DatasetAdmin)
