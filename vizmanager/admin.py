@@ -3,7 +3,6 @@ from .models import Municipality, Profile, Microsite, Theme, Dataset
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 
-
 class UserProfileInline(admin.StackedInline):
     verbose_name = 'Additional information for'
     model = Profile
@@ -84,7 +83,7 @@ class ThemeAdmin(admin.ModelAdmin):
 class MicrositeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
                     'forum_platform', 'layout', 'stacked_datasets',)
-    list_editable = ('selected_theme', 'language', 'forum_platform', 'layout',
+    list_editable = ('name', 'selected_theme', 'language', 'forum_platform', 'layout',
                      'stacked_datasets',)
     readonly_fields = ('id', )
 
