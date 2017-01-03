@@ -31,6 +31,7 @@ services:
       # non secret static environment variables
       - OS_VIEWER_THEMES_FOLDER=os_viewer_themes
       - OS_VIEWER_HOST=http://osviewer:5000
+      - OS_API=http://next.openspending.org/api/3
       - POSTGRES_HOST=db
       - POSTGRES_PORT=5432
       # uncomment or supply the following via command line to use the postgres db

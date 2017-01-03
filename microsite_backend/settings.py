@@ -128,6 +128,8 @@ STATIC_URL = '/static/'
 try:  # using Docker
     OS_VIEWER_THEMES_FOLDER = os.environ['OS_VIEWER_THEMES_FOLDER']
     OS_VIEWER_HOST = os.environ['OS_VIEWER_HOST']
+    OS_API = os.environ['OS_API']
 except KeyError:  # not using Docker
     OS_VIEWER_THEMES_FOLDER = 'os_viewer_themes'
     OS_VIEWER_HOST = 'http://next.openspending.org/viewer'
+    OS_API = 'http://next.openspending.org/api/3'
