@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from microsite_backend import settings
+from django.utils.html import format_html
+from colorfield.fields import ColorField
 import urllib
 import json
 
@@ -91,20 +93,18 @@ class Forum(models.Model):
 
     def disqus_identifier(self):
         # TODO: disambiguation for multiple instances of the Microsite service
+        # we could (parts of) the production URL(?)
         return 'openbudgets-microsite-disqus-{}'.format(self.microsite.pk)
 
 
 class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
-    brand_color = models.CharField(max_length=20,
-                                   verbose_name=_('Brand Color'),
+    brand_color = ColorField(verbose_name=_('Brand Color'),
                                    default='#FFFFFF')
-    sidebar_color = models.CharField(max_length=20,
-                                     verbose_name=_('Sidebar Color'),
+    sidebar_color = ColorField(verbose_name=_('Sidebar Color'),
                                      default='#888888')
-    content_color = models.CharField(max_length=20,
-                                     verbose_name=_('Content Color'),
+    content_color = ColorField(verbose_name=_('Content Color'),
                                      default='#222222')
 
     def json(self):
