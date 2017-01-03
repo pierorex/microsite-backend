@@ -1,3 +1,4 @@
+import requests
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -199,10 +200,48 @@ class Dataset(models.Model):
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))
 
-    def save(self, *args, **kwargs):
-        # TODO: get all available measures and hierarchies from OS API and add
-        # them to this instance
-        super(self.__class__, self).save(*args, **kwargs)
+    def hierarchies(self):
+        """
+        Lists the hierarchies of this dataset
+        :return: dictionary of hierarchies
+        """
+        return self.model.get('hierarchies')
+
+    def dimensions(self):
+        """
+        Lists the dimensions of this dataset
+        :return: dictionary of dimensions
+        """
+        return self.model.get('dimensions')
+
+    def build_url(self, extra):
+        return '{os_api}/cubes/{dataset_code}/{extra}'\
+            .format(os_api=settings.OS_API,
+                    dataset_code=self.code,
+                    extra=extra)
+
+    def get_os_model(self):
+        """
+        Query OpenSpendings API to get the model related to this dataset
+        :return: dictionary containing an OpenSpendings model
+        """
+        self.os_model = requests.get(self.build_url('model'))
+        return self.os_model
+
+    def drilldown(self, hierarchy, cut):
+        """
+        Query OpenSpendings API to drilldown on given hierarchy and cut
+        :return: dictionary containing subjects, money spend, etc
+        """
+        return NotImplementedError
+
+    def build_tree(self, hierarchy):
+        """
+        Build the tree structure of the dataset on a given hierarchy
+        :return: dictionary containing the tree
+        """
+        self.get_os_model()
+        return NotImplementedError
 
     def __str__(self):
         return '{}'.format(self.name)
