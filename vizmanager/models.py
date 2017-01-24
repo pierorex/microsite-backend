@@ -1,12 +1,14 @@
+import json
+import urllib
 import requests
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from microsite_backend import settings
-from django.utils.html import format_html
+
 from colorfield.fields import ColorField
-import urllib
-import json
+
+from microsite_backend import settings
 
 
 class Municipality(models.Model):
@@ -106,6 +108,7 @@ class Theme(models.Model):
                                      default='#888888')
     content_color = ColorField(verbose_name=_('Content Color'),
                                      default='#222222')
+
 
     def json(self):
         """

@@ -31,14 +31,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
+    # important to load dal before django.contrib.admin
+    # so that it is available in the admin interface
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'vizmanager',
+    'colorfield',
     'django_extensions',
+    'vizmanager',
 ]
 
 MIDDLEWARE_CLASSES = [

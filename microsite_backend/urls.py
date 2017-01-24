@@ -15,15 +15,19 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from vizmanager.admin import ma_site
 import vizmanager
 
 
 admin.site.site_header = 'OpenBudgets Microsite Manager'
+admin.site.site_title = 'Microsite Manager'
+admin.site.index_title = 'Microsite Manager'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^manage/', ma_site.urls),
     url(r'^vizmanager/', include('vizmanager.urls', namespace='vizmanager')),
 ]
 
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns += staticfiles_urlpatterns()

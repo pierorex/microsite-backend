@@ -1,7 +1,12 @@
 from django.contrib import admin
 from .models import Municipality, Profile, Microsite, Theme, Dataset
+from .forms import DatasetForm
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
+from django.utils.html import escape
+
+class MicroAdminSite(admin.AdminSite):
+    site_header = 'Microsite Administrators'
 
 class UserProfileInline(admin.StackedInline):
     verbose_name = 'Additional information for'
@@ -23,8 +28,20 @@ class MunicipalityAdmin(admin.ModelAdmin):
 
 
 class DatasetAdmin(admin.ModelAdmin):
+    form = DatasetForm
     list_display = ('name', 'microsite', 'code', 'viz_type',)
     list_editable = ('microsite', 'code', 'viz_type',)
+
+    fieldsets = (
+        ('Name and Site', {
+            'fields': ('name', 'microsite'),
+            'description': escape('Enter a name for this dataset and relate the dataset to a microsite.'),
+        }),
+        ('Data and Visualization', {
+            'description': escape('Search for a dataset code in OpenSpending and select a visualization strategy.'),
+            'fields': ('code', 'viz_type'),
+        }),
+    )
 
     def get_queryset(self, request):
         # Restrict queryset to only show Datasets belonging to the same
@@ -54,6 +71,15 @@ class ThemeAdmin(admin.ModelAdmin):
                     'content_color',)
     list_editable = ('microsite', 'brand_color', 'sidebar_color',
                      'content_color',)
+    fieldsets = (
+        ('Name and Site', {
+            'fields': ('name', 'microsite')
+        }),
+        ('Colors', {
+            'fields': ('brand_color', 'sidebar_color', 'content_color'),
+        }),
+    )
+
 
     def get_queryset(self, request):
         # Restrict queryset to only show Themes belonging to the same
@@ -123,6 +149,12 @@ class MicrositeAdmin(admin.ModelAdmin):
     class Meta:
         model = Microsite
 
+
+ma_site = MicroAdminSite(name='municipalityadmin')
+ma_site.register(Municipality, MunicipalityAdmin)
+ma_site.register(Microsite, MicrositeAdmin)
+ma_site.register(Theme, ThemeAdmin)
+ma_site.register(Dataset, DatasetAdmin)
 
 # unregister unmodified UserAdmin and register ProfileUserAdmin from above
 admin.site.unregister(User)
