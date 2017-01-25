@@ -1,4 +1,5 @@
 django
+django-autocomplete-light
 django-colorfield
 django-extensions
 psycopg2
