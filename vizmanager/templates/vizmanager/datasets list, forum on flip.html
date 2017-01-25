@@ -1,7 +1,13 @@
 <!-- the button changes the isFlipped variable toggling the flipped class in the card -->
-<button ng-click="isFlipped=!isFlipped" class="ui positive button" style="width: 100%">
-  Go to discussion!
+<button ng-click="isFlipped=!isFlipped" ng-class="" class="ui positive button" style="width: 100%">
+  <div ng-if="isFlipped">
+    Go to datasets view
+  </div>
+  <div ng-if="!isFlipped">
+    Go to discussion!
+  </div>
 </button>
+
 <div class="ui equal wide grid">
   <div class="row">
     <div class="stretched column">
