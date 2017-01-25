@@ -218,6 +218,12 @@ class Dataset(models.Model):
         return self.model.get('dimensions')
 
     def build_url(self, extra):
+        """
+        Put together the URL to be used in queries and apply the extra arguments
+        received
+        :param extra: string, usually a URL Query String like 'aggregate?cut=..'
+        :return: string, fully formatted URL to be used
+        """
         return '{os_api}/cubes/{dataset_code}/{extra}'\
             .format(os_api=settings.OS_API,
                     dataset_code=self.code,
@@ -244,6 +250,7 @@ class Dataset(models.Model):
         :return: dictionary containing the tree
         """
         self.get_os_model()
+
         return NotImplementedError
 
     def __str__(self):
