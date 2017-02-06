@@ -60,6 +60,10 @@ class Microsite(models.Model):
                                         'datasets list, forum on flip'),))
     stacked_datasets = models.BooleanField(verbose_name=_('Stacked Datasets'),
                                            default=False)
+    render_from = models.CharField(max_length=200,
+                                   default='OpenSpending',
+                                   choices=(('OpenSpending', 'OpenSpending'),
+                                            ('Babbage-ui', 'Babbage-ui'),))
 
     def create_forum(self):
         self.forum = Forum()
@@ -185,10 +189,6 @@ class Dataset(models.Model):
                                 verbose_name=_('Visualization Type'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
-    render_from = models.CharField(max_length=200,
-                                   default='OpenSpending',
-                                   choices=(('OpenSpending', 'OpenSpending'),
-                                            ('Babbage-ui', 'Babbage-ui'),))
 
     def embed_url(self):
         """
