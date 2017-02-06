@@ -101,7 +101,8 @@ class Forum(models.Model):
 
 class Theme(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
-    microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'))
+    microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'),
+                                  null=True)
     brand_color = ColorField(verbose_name=_('Brand Color'),
                                    default='#FFFFFF')
     sidebar_color = ColorField(verbose_name=_('Sidebar Color'),
@@ -184,6 +185,10 @@ class Dataset(models.Model):
                                 verbose_name=_('Visualization Type'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
+    render_from = models.CharField(max_length=200,
+                                   default='OpenSpending',
+                                   choices=(('OpenSpending', 'OpenSpending'),
+                                            ('Babbage-ui', 'Babbage-ui'),))
 
     def embed_url(self):
         """
