@@ -17,7 +17,21 @@
 
   {% for dataset in microsite.dataset_set.all %}
     <div class="ui raised segment" ng-show="current_dataset_url == '{{ dataset.embed_url }}'">
-      <iframe src="{{ dataset.embed_url }}" width="100%" height="800" border="0" frameborder="0" seamless="on" style="border: 0px; margin: 0px; padding: 0px;"></iframe>
+{#      {% if microsite.from == 'openspending' %}#}
+        <iframe src="{{ dataset.embed_url }}" width="100%" height="800" border="0" frameborder="0" seamless="on" style="border: 0px; margin: 0px; padding: 0px;"></iframe>
+{#      {% endif %}#}
+      {% if microsite.from == 'babbage-ui' %}
+        <div ng-controller="VisualizationController as vc">
+          <tree-map
+            ng-if="vc.isVisible"
+            cube="dataset.embed_url"
+            state="vc.state"
+            endpoint="{{vc.apiUrl}}"
+            format-value="vc.formatValue">
+          </tree-map>
+          <div class="btn btn-primary" ng-click="goBack()">Back</div>
+        </div>
+      {% endif %}
     </div>
   {% endfor %}
 {% endif %}
