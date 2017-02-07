@@ -239,8 +239,15 @@ class Dataset(models.Model):
         Query OpenSpendings API to get the model related to this dataset
         :return: dictionary containing an OpenSpendings model
         """
-        self.os_model = requests.get(self.build_url('model'))
+        self.os_model = requests.get(self.os_model_url())
         return self.os_model
+
+    def os_model_url(self):
+        """
+        Helper method to build the URL string to query the OS model data
+        :return: string, URL to query OS model
+        """
+        return self.build_url('model')
 
     def drilldown(self, hierarchy, cut):
         """
