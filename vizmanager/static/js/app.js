@@ -1,7 +1,7 @@
 /**
  * Look for the first useful key in an object
  * @param {Object} obj, object to be inspected
- * @return {Any} the chosen key
+ * @returns {Any} the chosen key
  */
 function firstKey(obj) {
   return Object.keys(obj)[0];
@@ -39,6 +39,7 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
      * @param {Object} $event, the event produced by clicking
      * @param {Object} component, area of the visualization component
      * @param {Object} item, selected (clicked) segment of the component
+     * @returns {String} name representing the current level in the hierarchy
      */
     goDeeper($event, component, item) {
       item_key = item.key;
@@ -53,14 +54,20 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
       console.log("state: ", this.state);
     }
 
+    /**
+     * Query OpenSpending to retrieve the hierarchies and dimensions from this
+     * particular dataset (cube, in OS terms)
+     * @returns {Promise} $http.get() promise which already contains success and
+     * error handling
+     */
     getModel() {
       let that = this;
       return $http.get(that.os_model_url).then(
         function(response) {
           that.hierarchies = response.data.model.hierarchies;
           that.dimensions = response.data.model.dimensions;
-          console.log("hierarchies: ", that.hierarchies);
-          console.log("dimensions: ", that.dimensions);
+          // console.log("hierarchies: ", that.hierarchies);
+          // console.log("dimensions: ", that.dimensions);
           that.hierarchy = firstKey(that.hierarchies);
           that.level_name = that.buildLevelName();
           that.state = {
@@ -79,7 +86,7 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
 
     /**
      * Traverse the hierarchies object using the current hierarchy and level to obtain a level name
-     * @return {String} name representing the current level in the hierarchy
+     * @returns {String} name representing the current level in the hierarchy
      */
     buildLevelName() {
       return this.dimensions[this.hierarchies[this.hierarchy].levels[this.level]].key_ref;
