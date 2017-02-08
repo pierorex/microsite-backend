@@ -17,27 +17,27 @@
 
   {% if microsite.render_from == 'Babbage-ui' %}
     <script type="text/javascript">
-      datasets = {};
+      var OS_API = "{{ OS_API }}";
+      var datasets = {};
       {% for dataset in microsite.dataset_set.all %}
         datasets["{{ dataset.pk }}"] = {};
 
         // rename it to work easier
         dataset = datasets["{{ dataset.pk }}"];
-
-        dataset.isVisible = true;
         dataset.code = "{{ dataset.code }}";
         dataset.os_model_url = "{{ dataset.os_model_url }}";
-
       {% endfor %}
     </script>
 
     <div ng-controller="BabbageController as bc">
-      <div ng-repeat="dataset in vc.datasets track by index">
-        <div ng-if=dataset.isVisible">
+      <div ng-repeat="dataset in bc.datasets track by $index">
+        <div ng-if="dataset.isVisible">
           <tree-map
-            cube="dataset.code"
+            {% verbatim %}
+            cube="{{ dataset.code }}"
+            {% endverbatim %}
             state="dataset.state"
-            endpoint="{{ settings.OS_API }}"
+            endpoint="{{ OS_API }}"
             format-value="dataset.formatValue">
           </tree-map>
           <div class="btn btn-primary" ng-click="dataset.goBack()">Back</div>

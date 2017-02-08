@@ -20,7 +20,7 @@ class MicrositeDetailView(DetailView):
         :return:
         """
         context = super(MicrositeDetailView, self).get_context_data(**kwargs)
-        context['settings.OS_API'] = settings.OS_API
+        context['OS_API'] = settings.OS_API
         return context
 
 

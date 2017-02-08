@@ -1,13 +1,3 @@
-/**
- * Look for the first useful key in an object
- * @param {Object} obj, object to be inspected
- * @returns {Any} the chosen key
- */
-function firstKey(obj) {
-  return Object.keys(obj)[0];
-}
-
-
 // TODO: make generic using metaprogramming or something similar so that we can use Babbage.<Any>Directive()
 var visualizationDirective = new window.Babbage.TreemapDirective();
 var MicrositeApp = angular.module('MicrositeApp', ['angular.filter']);
@@ -29,7 +19,6 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
   class Dataset {
     constructor(obj) {
       this.level = 0;
-      this.isVisible = obj.isVisible;
       this.code = obj.code;
       this.os_model_url = obj.os_model_url;
     }
@@ -66,16 +55,19 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
         function(response) {
           that.hierarchies = response.data.model.hierarchies;
           that.dimensions = response.data.model.dimensions;
+          that.aggregates = response.data.model.aggregates;
           // console.log("hierarchies: ", that.hierarchies);
           // console.log("dimensions: ", that.dimensions);
-          that.hierarchy = firstKey(that.hierarchies);
+          that.hierarchy = Object.keys(that.hierarchies)[0];
+          that.aggregate = Object.keys(that.aggregates)[1];
           that.level_name = that.buildLevelName();
           that.state = {
             group: [that.level_name],
-            aggregates: 'adjusted.sum',
+            aggregates: that.aggregate,
             filter: ''
           };
           console.log("state: ", that.state);
+          that.isVisible = true;
         },
         function(error) {
           alert('An error occurred when querying to the API');
@@ -131,6 +123,7 @@ MicrositeApp.controller('BabbageController', function ($scope, $http, $timeout) 
    * click event handlers
    */
   function init() {
+    bc.OS_API = OS_API;
     bc.datasets = {};
 
     for (let key in datasets) {
