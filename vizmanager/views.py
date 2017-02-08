@@ -13,6 +13,12 @@ class MicrositeDetailView(DetailView):
     model = Microsite
 
     def get_context_data(self, **kwargs):
+        """
+        Add custom data to be passed to the template, anything you put inside
+        the `context` dictionary will be available in the template as a variable
+        :param kwargs: dictionary,
+        :return:
+        """
         context = super(MicrositeDetailView, self).get_context_data(**kwargs)
         context['settings.OS_API'] = settings.OS_API
         return context
@@ -27,7 +33,7 @@ class DatasetAutocomplete(autocomplete.Select2ListView):
     def get(self, request, *args, **kwargs):
         """
         Renders a json list of dataset name/description pairs
-        :param q a search query that is wrapped in double quotes and forwarded to the OS_API
+        :param q: string, a search query that is wrapped in double quotes and forwarded to the OS_API
         :returns [ {"id" : "dataset code", "title" : "dataset description as in OpenSpending" }, {...} ]
         """
         datasets = []
