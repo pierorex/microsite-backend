@@ -12,6 +12,11 @@ from microsite_backend import settings
 class MicrositeDetailView(DetailView):
     model = Microsite
 
+    def get_context_data(self, **kwargs):
+        context = super(MicrositeDetailView, self).get_context_data(**kwargs)
+        context['settings.OS_API'] = settings.OS_API
+        return context
+
 
 class DatasetAutocomplete(autocomplete.Select2ListView):
     """

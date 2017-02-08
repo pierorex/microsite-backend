@@ -15,23 +15,42 @@
     {% endfor %}
   </select>
 
-  {% for dataset in microsite.dataset_set.all %}
-    <div class="ui raised segment" ng-show="current_dataset_url == '{{ dataset.embed_url }}'">
-      {% if dataset.render_from == 'OpenSpending' %}
-        <iframe src="{{ dataset.embed_url }}" width="100%" height="800" border="0" frameborder="0" seamless="on" style="border: 0px; margin: 0px; padding: 0px;"></iframe>
-      {% endif %}
-      {% if dataset.render_from == 'Babbage-ui' %}
-        <div ng-controller="VisualizationController as vc">
+  {% if microsite.render_from == 'Babbage-ui' %}
+    <script type="text/javascript">
+      datasets = {};
+      {% for dataset in microsite.dataset_set.all %}
+        datasets["{{ dataset.pk }}"] = {};
+
+        // rename it to work easier
+        dataset = datasets["{{ dataset.pk }}"];
+
+        dataset.isVisible = true;
+        dataset.code = "{{ dataset.code }}";
+        dataset.os_model_url = "{{ dataset.os_model_url }}";
+
+      {% endfor %}
+    </script>
+
+    <div ng-controller="BabbageController as bc">
+      <div ng-repeat="dataset in vc.datasets track by index">
+        <div ng-if=dataset.isVisible">
           <tree-map
-            ng-if="vc.datasets[vc.current].isVisible"
-            cube="dataset.embed_url"
-            state="vc.state"
-            endpoint="{{vc.apiUrl}}"
-            format-value="vc.formatValue">
+            cube="dataset.code"
+            state="dataset.state"
+            endpoint="{{ settings.OS_API }}"
+            format-value="dataset.formatValue">
           </tree-map>
-          <div class="btn btn-primary" ng-click="goBack()">Back</div>
+          <div class="btn btn-primary" ng-click="dataset.goBack()">Back</div>
         </div>
-      {% endif %}
+      </div>
     </div>
-  {% endfor %}
+  {% endif %}
+
+  {% if microsite.render_from == 'OpenSpending' %}
+    {% for dataset in microsite.dataset_set.all %}
+      <div class="ui raised segment" ng-show="current_dataset_url == '{{ dataset.embed_url }}'">
+        <iframe src="{{ dataset.embed_url }}" width="100%" height="800" border="0" frameborder="0" seamless="on" style="border: 0px; margin: 0px; padding: 0px;"></iframe>
+      </div>
+    {% endfor %}
+  {% endif %}
 {% endif %}
