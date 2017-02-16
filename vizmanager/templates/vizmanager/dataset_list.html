@@ -31,16 +31,14 @@
 
     <div ng-controller="BabbageController as bc">
       <div ng-repeat="dataset in bc.datasets track by $index">
+        <div class="btn btn-primary" ng-click="dataset.goBack()">Back</div>
         <div ng-if="dataset.isVisible">
           <tree-map
-            {% verbatim %}
-            cube="{{ dataset.code }}"
-            {% endverbatim %}
+            {% verbatim %} cube="{{ dataset.code }}" {% endverbatim %}
             state="dataset.state"
             endpoint="{{ OS_API }}"
             format-value="dataset.formatValue">
           </tree-map>
-          <div class="btn btn-primary" ng-click="dataset.goBack()">Back</div>
         </div>
       </div>
     </div>
