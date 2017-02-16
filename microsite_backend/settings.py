@@ -24,7 +24,7 @@ SECRET_KEY = 'tsribb-z_1x(bod2&k28zd@h496s#4(e*wg5^622&uk#7ig$(g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
