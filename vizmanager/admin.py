@@ -108,9 +108,10 @@ class ThemeAdmin(admin.ModelAdmin):
 
 class MicrositeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
-                    'forum_platform', 'layout', 'stacked_datasets',)
+                    'forum_platform', 'layout', 'stacked_datasets',
+                    'render_from')
     list_editable = ('name', 'selected_theme', 'language', 'forum_platform', 'layout',
-                     'stacked_datasets',)
+                     'stacked_datasets', 'render_from')
     readonly_fields = ('id', )
 
     def get_queryset(self, request):
