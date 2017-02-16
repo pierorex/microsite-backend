@@ -4,3 +4,4 @@ django-colorfield
 django-extensions
 psycopg2
 requests
+whitenoise
