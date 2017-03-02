@@ -4,7 +4,6 @@ Software-as-a-Service (SaaS) solution that will allow their citizens to
 visualize, interact and discuss about Budget and Spending of their towns, cities
 and countries. 
 
-
 ##For Administrators
 ###Create users for municipalities
 - To create a new user for a municipality, follow these steps:
@@ -25,6 +24,35 @@ and countries.
       municipality.
   - Save changes.
 
+##For Municipalities
+###Workflow from zero to deployed
+- First, create a Microsite and take note of the Microsite ID that is generated 
+  for it. Enabling a Forum Platform here will enable discussion and 
+  participation between citizens in your Microsite.
+- Add as many Datasets as you want and link them to your Microsite.
+- Set a layout for the microsite, which indicates how the datasets 
+  are going to be drawn on screen and where should the discussion forum appear
+- (optional) Add as many themes as you'd like and link them to your Microsite.
+- (optional) Go to your Microsite detail page and select the theme you like the 
+  most.
+- Go to http://HOST_URL/vizmanager/{Microsite ID} to see your Microsite being 
+  rendered
+
+###Important
+- The **code** field of a Dataset in the administration site has to be set to
+  the code you get from OpenSpending when you upload the dataset there.
+  <br>
+  E.g., if you can see your dataset here: 
+  ```
+  http://next.openspending.org/viewer/23cdc48554ae8648deff7837c025d8c0:kpai2016
+  ```
+  Then your Dataset's code is:
+  ```
+  23cdc48554ae8648deff7837c025d8c0:kpai2016
+  ```
+  With the dataset-selection widget it should be as easy as inserting part of 
+  the dataset name in the field and selecting it from the suggestions that will 
+  appear in a second.
 
 ##For Developers / DevOps
 ###Run locally
@@ -53,30 +81,3 @@ http://localhost:8000/admin and the frontend for each microsite should be at
 - Disqus' guest comments are automatically flagged to be pre-moderated, so if 
   there are users commenting without an account, this will require a moderator 
   to approve their comments.
-  
-
-##For Municipalities
-###Workflow
-- First, you create a new Municipality inside the Administration Site. 
-- Then, create a Microsite and take note of the Microsite ID that is generated 
-  for it. Enabling a Forum Platform here will enable discussion and 
-  participation between citizens in your Microsite.
-- Add as many Datasets as you want and link them to your Microsite.
-- (optional) Add as many themes as you'd like and link them to your Microsite.
-- (optional) Go to your Microsite detail page and select the theme you like the 
-  most.
-- Go to http://HOST_URL/vizmanager/{Microsite ID} to see your Microsite being 
-  rendered
-
-###Important
-- The **code** field of a Dataset in the administration site has to be set to
-  the code you get from OpenSpending when you upload the dataset there.
-  <br>
-  E.g., if you can see your dataset here: 
-  ```
-  http://next.openspending.org/viewer/23cdc48554ae8648deff7837c025d8c0:kpai2016
-  ```
-  Then your Dataset's code is:
-  ```
-  23cdc48554ae8648deff7837c025d8c0:kpai2016
-  ```
