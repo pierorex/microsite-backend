@@ -1,4 +1,5 @@
 import json
+import os
 import urllib
 import requests
 
@@ -132,6 +133,12 @@ class Theme(models.Model):
         themes folder
         :return: None
         """
+        folder = '{}'.format(settings.OS_VIEWER_THEMES_FOLDER)
+
+        # create the folder if it doesn't exist to avoid crashing
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+
         file_path = '{folder}/{filename}.json'.format(
             folder=settings.OS_VIEWER_THEMES_FOLDER,
             filename=self.__str__())
