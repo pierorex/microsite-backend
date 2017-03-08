@@ -25,7 +25,7 @@ class DatasetForm(forms.ModelForm):
             url='vizmanager:dataset-autocomplete',
             attrs={
                 'data-placeholder':_('Click to load a dataset...'),
-                'data-minimum-input-length':6
+                'data-minimum-input-length': 4
             }
         )
     )
