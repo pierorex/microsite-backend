@@ -1,1 +1,1 @@
-web: gunicorn microsite_backend.wsgi --log-file -
+web: gunicorn microsite_backend.heroku_wsgi --log-file -
