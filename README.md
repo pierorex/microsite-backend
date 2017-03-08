@@ -8,24 +8,28 @@ and countries.
 ###Create users for municipalities
 - To create a new user for a municipality, follow these steps:
   - Go to the administration site (http://<your-url>/admin)
-  - Create Profile:
-    - Click "Add" on the Profile section.
-    - Click the green plus sign to add a new user and actually add a one.
+  - Log in with admin credentials
+  - Create User:
+    - Click "Add" in the User section.
+    - Add a name and password for the user.
+    - Assign the user to a municipality:
+        - Choose or create new municipality. This determines the content this 
+          user has access to by filtering in the admin site according to his/her 
+          municipality.
+     - Save changes
   - Assign permissions to the user:
-    - Click the pencil to edit this new user, tick the is_superuser box. 
-    - Add the following permissions:
+    - In the users lists, click on the user you just created
+    - Under the "Permissions" section, tick the "Staff status" box. This will
+      allow the user to access the administration site.
+    - Under the "User permissions" subsection, add the following permissions 
+      from the left box to the right box:
       - Add/change/delete Dataset
       - Add/change/delete Microsite
       - Add/change/delete Theme
     - Save changes.
-  - Assign the user to a municipality:  
-    - Choose or create new municipality. This determines the content this user 
-      has access to by filtering content in the admin site according to his/her 
-      municipality.
-  - Save changes.
 
 ##For Municipalities
-###Workflow from zero to deployed
+###Workflow from zero to deploy
 - First, create a Microsite and take note of the Microsite ID that is generated 
   for it. Enabling a Forum Platform here will enable discussion and 
   participation between citizens in your Microsite.
@@ -50,15 +54,18 @@ and countries.
   ```
   23cdc48554ae8648deff7837c025d8c0:kpai2016
   ```
-  With the dataset-selection widget it should be as easy as inserting part of 
+  <b>With the dataset-selection widget it should be as easy as inserting part of 
   the dataset name in the field and selecting it from the suggestions that will 
-  appear in a second.
+  appear as the system recognises your dataset.<b>
 
 ##For Developers / DevOps
+This project uses Python3, Django and AngularJS 1.x.
+<br> 
+Familiarity with those is advised.
+
 ###Run locally
 ```bash
 $ sudo pip3 install -r requirements.txt
-$ python3 manage.py makemigrations
 $ python3 manage.py migrate
 $ python3 manage.py runserver
 ```
