@@ -3,7 +3,7 @@ import os
 import sys
 
 if __name__ == "__main__":
-    django_env = os.getenvb('DJANGO_ENV', '')
+    django_env = os.getenv('DJANGO_ENV', '')
     os.environ.setdefault("DJANGO_SETTINGS_MODULE",
                           "microsite_backend.{}settings".format(django_env))
 
