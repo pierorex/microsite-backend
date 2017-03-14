@@ -126,7 +126,10 @@ class Theme(models.Model):
                 'brand': self.brand_color,
                 'sidebar': self.sidebar_color,
                 'content': self.content_color
-            }
+            },
+            'header': {},
+            'footer': {},
+            'socialMedia': {}
         })
 
     def create_theme_file(self):
