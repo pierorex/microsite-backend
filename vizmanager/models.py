@@ -122,9 +122,11 @@ class Theme(models.Model):
         :return: JSON string
         """
         return json.dumps({
-            'brand_color': self.brand_color,
-            'sidebar_color': self.sidebar_color,
-            'content_color': self.content_color
+            'colors': {
+                'brand': self.brand_color,
+                'sidebar': self.sidebar_color,
+                'content': self.content_color
+            }
         })
 
     def create_theme_file(self):
