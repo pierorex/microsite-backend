@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="MicrositeApp">
   <body ng-controller="MainViewController" style="min-height: 100%">
+    {% load staticfiles %}
+    <a href="http://openbudgets.eu/" target="_blank">
+      <img src="{% static 'images/openbudgets_logo.png' %}" width="15%" height="5%">
+    </a>
     {# Trick to include the template corresponding to the layout selected for the microsite #}
     {% with template_name=microsite.layout|add:'.html' %}
       {% include 'vizmanager/'|add:template_name %}
