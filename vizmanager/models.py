@@ -1,5 +1,6 @@
 import json
 import os
+import pdb
 import urllib
 import requests
 
@@ -10,6 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 from colorfield.fields import ColorField
 
 from microsite_backend import settings
+from vizmanager.model_mixins import ModelDiffMixin
 
 
 class Municipality(models.Model):
@@ -191,7 +193,7 @@ class Hierarchy(models.Model):
         verbose_name_plural = _('Hierarchies')
 
 
-class Dataset(models.Model):
+class Dataset(ModelDiffMixin, models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     microsite = models.ForeignKey(Microsite, verbose_name=_('Microsite'),
                                   null=True, blank=True)
@@ -201,6 +203,19 @@ class Dataset(models.Model):
                                 verbose_name=_('Visualization Type'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
+
+    def save(self, *args, **kwargs):
+        """
+        Prior to saving a Dataset, make sure
+        :param args: default args
+        :param kwargs: default kwargs
+        :return: None
+        """
+        old_value, new_value = self.get_field_diff('code')
+        print(self.get_field_diff('code'))
+        if new_value == '' and old_value not in ['', None]:
+            self.code = old_value
+        super(self.__class__, self).save(*args, **kwargs)
 
     def embed_url(self):
         """
@@ -279,6 +294,8 @@ class Dataset(models.Model):
 
     def __str__(self):
         return '{}'.format(self.name)
+
+
 
     class Meta:
         verbose_name = _('Dataset')
