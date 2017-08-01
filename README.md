@@ -1,11 +1,11 @@
-#OpenBudgets Microsite
+# OpenBudgets Microsite
 This is an European Union project focused on giving EU municipalities a 
 Software-as-a-Service (SaaS) solution that will allow their citizens to 
 visualize, interact and discuss about Budget and Spending of their towns, cities
 and countries. 
 
-##For Administrators
-###Create users for municipalities
+## For Administrators
+### Create users for municipalities
 - To create a new user for a municipality, follow these steps:
   - Go to the administration site (http://<your-url>/admin)
   - Log in with admin credentials
@@ -28,8 +28,8 @@ and countries.
       - Add/change/delete Theme
     - Save changes.
 
-##For Municipalities
-###Workflow from zero to deploy
+## For Municipalities
+### Workflow from zero to deploy
 - First, create a Microsite and take note of the Microsite ID that is generated 
   for it. Enabling a Forum Platform here will enable discussion and 
   participation between citizens in your Microsite.
@@ -42,7 +42,7 @@ and countries.
 - Go to http://HOST_URL/vizmanager/{Microsite ID} to see your Microsite being 
   rendered
 
-###Important
+### Important
 - The **code** field of a Dataset in the administration site has to be set to
   the code you get from OpenSpending when you upload the dataset there.
   <br>
@@ -58,19 +58,19 @@ and countries.
   the dataset name in the field and selecting it from the suggestions that will 
   appear as the system recognises your dataset.<b>
 
-##For Developers / DevOps
+## For Developers / DevOps
 This project uses Python3, Django and AngularJS 1.x.
 <br> 
 Familiarity with those is advised.
 
-###Run locally
+### Run locally
 ```bash
 $ sudo pip3 install -r requirements.txt
 $ python3 manage.py migrate
 $ python3 manage.py runserver
 ```
 
-###Run on Docker Compose
+### Run on Docker Compose
 Configure environment variables inside docker-compose.yml and then run:
 ```bash
 $ docker-compose up
@@ -79,7 +79,7 @@ The backend administration server should be reachable at
 http://localhost:8000/admin and the frontend for each microsite should be at
  http://localhost:8000/vizmanager/{Microsite ID}
 
-###Important
+### Important
 - If you're using a remote version of OS-Viewer, your themes won't be available 
   on microsites; the idea for that functionality to work is to use a local 
   installation or a docker container of OS-Viewer. That way, you can share 
