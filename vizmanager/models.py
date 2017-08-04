@@ -199,7 +199,16 @@ class Dataset(ModelDiffMixin, models.Model):
                                   null=True, blank=True)
     code = models.CharField(max_length=200, verbose_name=_('Code'))
     viz_type = models.CharField(max_length=200,
-                                choices=(('Treemap', 'Treemap'),),
+                                choices=(
+                                    ('Treemap', 'Treemap'),
+                                    ('BarChart', 'BarChart'),
+                                    ('PieChart', 'PieChart'),
+                                    ('BubbleTree', 'BubbleTree'),
+                                    ('Sankey', 'Sankey'),
+                                    ('Radar', 'Radar'),
+                                    ('PivotTable', 'PivotTable'),
+                                    ('Table', 'Table')
+                                ),
                                 verbose_name=_('Visualization Type'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
