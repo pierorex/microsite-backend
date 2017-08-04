@@ -252,14 +252,16 @@ class Dataset(ModelDiffMixin, models.Model):
         Lists the hierarchies of this dataset
         :return: dictionary of hierarchies
         """
-        return self.model.get('hierarchies')
+        self.get_os_model()
+        return self.os_model.get('hierarchies')
 
     def dimensions(self):
         """
         Lists the dimensions of this dataset
         :return: dictionary of dimensions
         """
-        return self.model.get('dimensions')
+        self.get_os_model()
+        return self.os_model.get('dimensions')
 
     def build_url(self, extra):
         """
@@ -278,7 +280,13 @@ class Dataset(ModelDiffMixin, models.Model):
         Query OpenSpendings API to get the model related to this dataset
         :return: dictionary containing an OpenSpendings model
         """
-        self.os_model = requests.get(self.os_model_url())
+        # if the OS model has not been downloaded yet, download it know and
+        # return it, otherwise just return the saved version
+        try:
+            return self.os_model
+        except AttributeError:
+            response = requests.get(self.os_model_url())
+            self.os_model = response.json().get('model')
         return self.os_model
 
     def os_model_url(self):
