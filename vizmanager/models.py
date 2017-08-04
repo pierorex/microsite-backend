@@ -220,10 +220,13 @@ class Dataset(ModelDiffMixin, models.Model):
         :param kwargs: default kwargs
         :return: None
         """
-        old_value, new_value = self.get_field_diff('code')
-        print(self.get_field_diff('code'))
-        if new_value == '' and old_value not in ['', None]:
-            self.code = old_value
+        try:
+            # if the 'code' is changing to '', set it back to its original value
+            old_value, new_value = self.get_field_diff('code')
+            if new_value == '' and old_value not in ['', None]:
+                self.code = old_value
+        except TypeError:
+            pass
         super(self.__class__, self).save(*args, **kwargs)
 
     def embed_url(self):
