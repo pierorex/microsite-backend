@@ -117,7 +117,6 @@ class Theme(models.Model):
     content_color = ColorField(verbose_name=_('Content Color'),
                                      default='#222222')
 
-
     def json(self):
         """
         Build the json representation of this theme that is needed by OS Viewer
@@ -212,6 +211,7 @@ class Dataset(ModelDiffMixin, models.Model):
                                 verbose_name=_('Visualization Type'))
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
+    initial_dimension = models.CharField(max_length=100, null=True)
 
     def save(self, *args, **kwargs):
         """
@@ -243,11 +243,12 @@ class Dataset(ModelDiffMixin, models.Model):
             'theme': self.microsite.selected_theme,
             # 'measure': 'Amount.sum',  # TODO
             # 'order': 'Amount.sum|desc',
-            'visualizations': self.viz_type
+            'visualizations': self.viz_type,
+            'dimensions': self.initial_dimension
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))
 
-    def hierarchies(self):
+    def get_hierarchies(self):
         """
         Lists the hierarchies of this dataset
         :return: dictionary of hierarchies
@@ -255,7 +256,7 @@ class Dataset(ModelDiffMixin, models.Model):
         self.get_os_model()
         return self.os_model.get('hierarchies')
 
-    def dimensions(self):
+    def get_dimensions(self):
         """
         Lists the dimensions of this dataset
         :return: dictionary of dimensions
@@ -286,7 +287,15 @@ class Dataset(ModelDiffMixin, models.Model):
             return self.os_model
         except AttributeError:
             response = requests.get(self.os_model_url())
-            self.os_model = response.json().get('model')
+            if response.status_code == 200:
+                self.os_model = response.json().get('model')
+            else:
+                self.os_model = {
+                    'dimensions': ['This Dataset does not exist in the '
+                                   'current OS API being used'],
+                    'hierarchies': ['This Dataset does not exist in the '
+                                    'current OS API being used']
+                }
         return self.os_model
 
     def os_model_url(self):
@@ -314,8 +323,6 @@ class Dataset(ModelDiffMixin, models.Model):
 
     def __str__(self):
         return '{}'.format(self.name)
-
-
 
     class Meta:
         verbose_name = _('Dataset')

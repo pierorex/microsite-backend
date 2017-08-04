@@ -5,8 +5,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import escape
 
+
 class MicroAdminSite(admin.AdminSite):
     site_header = 'Microsite Administrators'
+
 
 class UserProfileInline(admin.StackedInline):
     verbose_name = 'Additional information for'
@@ -16,7 +18,7 @@ class UserProfileInline(admin.StackedInline):
 
 
 class ProfileUserAdmin(UserAdmin):
-    inlines = [ UserProfileInline ]
+    inlines = [UserProfileInline]
 
 
 class MunicipalityAdmin(admin.ModelAdmin):
@@ -39,7 +41,7 @@ class DatasetAdmin(admin.ModelAdmin):
         }),
         ('Data and Visualization', {
             'description': escape('Search for a dataset code in OpenSpending and select a visualization strategy.'),
-            'fields': ('code', 'viz_type'),
+            'fields': ('code', 'viz_type', 'initial_dimension', ),
         }),
     )
 
@@ -157,7 +159,7 @@ ma_site.register(Microsite, MicrositeAdmin)
 ma_site.register(Theme, ThemeAdmin)
 ma_site.register(Dataset, DatasetAdmin)
 
-# unregister unmodified UserAdmin and register ProfileUserAdmin from above
+# un-register unmodified UserAdmin and register ProfileUserAdmin from above
 admin.site.unregister(User)
 admin.site.register(User, ProfileUserAdmin)
 
