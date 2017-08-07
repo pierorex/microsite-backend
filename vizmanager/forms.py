@@ -18,8 +18,17 @@ class DatasetForm(forms.ModelForm):
     )
 
     def build_dimension_choices(self):
-        dimensions = self.instance.get_dimensions()
-        return zip(dimensions, dimensions)
+        references = []
+
+        for dim_name, dim_dict in self.instance.get_dimensions().items():
+            for attr_name, attr_dict in dim_dict.get('attributes').items():
+                references.append(attr_dict.get('ref'))
+
+        return zip(references, references)
+
+    def build_measure_choices(self):
+        measures = self.instance.get_measures()
+        return zip(measures, measures)
 
     def __init__(self, *args, **kwargs):
         super(DatasetForm, self).__init__(*args, **kwargs)
@@ -33,3 +42,7 @@ class DatasetForm(forms.ModelForm):
         # create dynamic choices field for the available dimensions
         self.fields['initial_dimension'] = forms.ChoiceField(
             choices=self.build_dimension_choices())
+
+        # create dynamic choices field for the available measures
+        self.fields['initial_measure'] = forms.ChoiceField(
+            choices=self.build_measure_choices())

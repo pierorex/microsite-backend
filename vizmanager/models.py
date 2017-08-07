@@ -212,6 +212,7 @@ class Dataset(ModelDiffMixin, models.Model):
     show_tables = models.BooleanField(default=False,
                                       verbose_name=_('Show Tables?'))
     initial_dimension = models.CharField(max_length=100, null=True)
+    initial_measure = models.CharField(max_length=100, null=True)
 
     def save(self, *args, **kwargs):
         """
@@ -241,10 +242,10 @@ class Dataset(ModelDiffMixin, models.Model):
         params = {
             'lang': self.microsite.language,
             'theme': self.microsite.selected_theme,
-            # 'measure': 'Amount.sum',  # TODO
             # 'order': 'Amount.sum|desc',
             'visualizations': self.viz_type,
-            'dimensions': self.initial_dimension
+            'groups[]': self.initial_dimension,
+            'measure': '{}.sum'.format(self.initial_measure)
         }
         return '{}{}'.format(url, urllib.parse.urlencode(params))
 
@@ -263,6 +264,14 @@ class Dataset(ModelDiffMixin, models.Model):
         """
         self.get_os_model()
         return self.os_model.get('dimensions')
+
+    def get_measures(self):
+        """
+        Lists the dimensions of this dataset
+        :return: dictionary of dimensions
+        """
+        self.get_os_model()
+        return self.os_model.get('measures')
 
     def build_url(self, extra):
         """

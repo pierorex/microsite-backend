@@ -41,7 +41,8 @@ class DatasetAdmin(admin.ModelAdmin):
         }),
         ('Data and Visualization', {
             'description': escape('Search for a dataset code in OpenSpending and select a visualization strategy.'),
-            'fields': ('code', 'viz_type', 'initial_dimension', ),
+            'fields': ('code', 'viz_type', 'initial_dimension',
+                       'initial_measure'),
         }),
     )
 
