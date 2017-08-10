@@ -53,3 +53,90 @@ class DatasetAutocomplete(autocomplete.Select2ListView):
         return http.HttpResponse(json.dumps({
             'results': datasets
         }))
+
+
+class OrganizationAutocomplete(autocomplete.Select2ListView):
+    """
+    Renders a json list of organization name/description pairs in Select2ListView format
+    """
+    MAX_COMPLETIONS = 100
+
+    def get(self, request, *args, **kwargs):
+        """
+        Renders a json list of dataset name/description pairs
+        :param q: string, a search query that is wrapped in double quotes and forwarded to the OS_API
+        :returns [ {"id" : "dataset code", "title" : "dataset description as in OpenSpending" }, {...} ]
+        """
+        organizations = []
+
+        if self.q:
+            kpi_api = settings.KPI_API
+
+            r = requests.get(kpi_api + "/filters/organizations", params={'q': self.q, })
+
+            for organization in r.json():
+                title = organization["label"]
+                id = organization['url']
+                organizations.append(dict(id=id, text=title))
+
+        return http.HttpResponse(json.dumps({
+            'results': organizations
+        }))
+
+
+class YearAutocomplete(autocomplete.Select2ListView):
+    """
+    Renders a json list of organization name/description pairs in Select2ListView format
+    """
+    MAX_COMPLETIONS = 100
+
+    def get(self, request, *args, **kwargs):
+        """
+        Renders a json list of dataset name/description pairs
+        :param q: string, a search query that is wrapped in double quotes and forwarded to the OS_API
+        :returns [ {"id" : "dataset code", "title" : "dataset description as in OpenSpending" }, {...} ]
+        """
+        years = []
+
+        if self.q:
+            kpi_api = settings.KPI_API
+
+            r = requests.get(kpi_api + "/filters/years", params={'q': self.q, })
+
+            for year in r.json():
+                title = year["label"]
+                id = year['url']
+                years.append(dict(id=id, text=title))
+
+        return http.HttpResponse(json.dumps({
+            'results': years
+        }))
+
+
+class PhaseAutocomplete(autocomplete.Select2ListView):
+    """
+    Renders a json list of organization name/description pairs in Select2ListView format
+    """
+    MAX_COMPLETIONS = 100
+
+    def get(self, request, *args, **kwargs):
+        """
+        Renders a json list of dataset name/description pairs
+        :param q: string, a search query that is wrapped in double quotes and forwarded to the OS_API
+        :returns [ {"id" : "dataset code", "title" : "dataset description as in OpenSpending" }, {...} ]
+        """
+        phases = []
+
+        if self.q:
+            kpi_api = settings.KPI_API
+
+            r = requests.get(kpi_api + "/filters/phases", params={'q': self.q, })
+
+            for year in r.json():
+                title = year["label"]
+                id = year['url']
+                phases.append(dict(id=id, text=title))
+
+        return http.HttpResponse(json.dumps({
+            'results': phases
+        }))
