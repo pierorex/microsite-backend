@@ -135,6 +135,6 @@ try:  # using Docker
     OS_API = os.environ['OS_API']
 except KeyError:  # not using Docker
     OS_VIEWER_THEMES_FOLDER = 'os_viewer_themes'
-    OS_VIEWER_HOST = 'http://apps.openbudgets.eu/viewer'
-    OS_API = 'http://apps.openbudgets.eu/api/3'
+    OS_VIEWER_HOST = 'http://next.openspending.org/viewer'
+    OS_API = 'http://next.openspending.org/api/3'
     KPI_API = "http://localhost:5000/api/v1"
