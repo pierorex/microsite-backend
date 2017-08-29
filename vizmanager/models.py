@@ -371,7 +371,7 @@ class Dataset(ModelDiffMixin, models.Model):
         Query OpenSpendings API to get the model related to this dataset
         :return: dictionary containing an OpenSpendings model
         """
-        # if the OS model has not been downloaded yet, download it know and
+        # if the OS model has not been downloaded yet, download it now and
         # return it, otherwise just return the saved version
         try:
             return self.os_model
@@ -380,12 +380,12 @@ class Dataset(ModelDiffMixin, models.Model):
             if response.status_code == 200:
                 self.os_model = response.json().get('model')
             else:
-                self.os_model = {
-                    'dimensions': ['This Dataset does not exist in the '
-                                   'current OS API being used'],
-                    'hierarchies': ['This Dataset does not exist in the '
-                                    'current OS API being used']
-                }
+                raise RuntimeError(
+                    'The configured OS_API is not working for this dataset.\n'
+                    'Please check the settings.py file.\n'
+                    'OS_API = {}.\n'
+                    'Dataset code = {}'
+                    .format(settings.OS_API, self.code))
         return self.os_model
 
     def os_model_url(self):
