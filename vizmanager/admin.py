@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Municipality, Profile, Microsite, Theme, Dataset
-from .forms import DatasetForm
+from .models import Municipality, Profile, Microsite, Theme, Dataset, KPI, Organization, Phase, Year, Indicator
+from .forms import DatasetForm, OrganizationForm, YearForm, PhaseForm
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.html import escape
@@ -154,11 +154,46 @@ class MicrositeAdmin(admin.ModelAdmin):
         model = Microsite
 
 
+class KPIAdmin(admin.ModelAdmin):
+    class Meta:
+        model = KPI
+
+
+class OrganizationAdmin(admin.ModelAdmin):
+    form = OrganizationForm
+    list_display= ('url', 'name',)
+    list_editable = ('name', )
+
+    class Meta:
+        model = Organization
+
+
+class YearAdmin(admin.ModelAdmin):
+    form = YearForm
+    list_display= ('url', 'name',)
+    list_editable = ('name', )
+
+    class Meta:
+        model = Year
+
+
+class PhaseAdmin(admin.ModelAdmin):
+    form = PhaseForm
+    list_display= ('url', 'name',)
+    list_editable = ('name', )
+
+    class Meta:
+        model = Phase
+
 ma_site = MicroAdminSite(name='municipalityadmin')
 ma_site.register(Municipality, MunicipalityAdmin)
 ma_site.register(Microsite, MicrositeAdmin)
 ma_site.register(Theme, ThemeAdmin)
 ma_site.register(Dataset, DatasetAdmin)
+ma_site.register(KPI, KPIAdmin)
+ma_site.register(Organization, OrganizationAdmin)
+ma_site.register(Year, YearAdmin)
+ma_site.register(Phase, PhaseAdmin)
 
 # un-register unmodified UserAdmin and register ProfileUserAdmin from above
 admin.site.unregister(User)
@@ -169,3 +204,7 @@ admin.site.register(Municipality, MunicipalityAdmin)
 admin.site.register(Microsite, MicrositeAdmin)
 admin.site.register(Theme, ThemeAdmin)
 admin.site.register(Dataset, DatasetAdmin)
+admin.site.register(KPI, KPIAdmin)
+admin.site.register(Organization, OrganizationAdmin)
+admin.site.register(Year, YearAdmin)
+admin.site.register(Phase, PhaseAdmin)

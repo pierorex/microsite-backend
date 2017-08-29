@@ -14,6 +14,85 @@ from microsite_backend import settings
 from vizmanager.model_mixins import ModelDiffMixin
 
 
+class Organization(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    url = models.URLField(max_length=200, verbose_name=_('Url'), primary_key=True)
+
+    class Meta:
+        verbose_name = _('Organization')
+        verbose_name_plural = _('Organizations')
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
+class Phase(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    url = models.URLField(max_length=200, verbose_name=_('Url'), primary_key=True)
+
+    class Meta:
+        verbose_name = _('Budget Phase')
+        verbose_name_plural = _('Budget Phases')
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
+class Year(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    url = models.URLField(max_length=200, verbose_name=_('Url'), primary_key=True)
+
+    class Meta:
+        verbose_name = _('Year')
+        verbose_name_plural = _('Years')
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
+class Indicator(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    indicator = models.CharField(max_length=200, verbose_name=_('indicator'))
+
+    class Meta:
+        verbose_name = _('Indicator')
+        verbose_name_plural = _('Indicators')
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+
+class KPI(models.Model):
+    name = models.CharField(max_length=200, verbose_name=_('Name'))
+    organization = models.ForeignKey(Organization)
+    year = models.ForeignKey(Year)
+    phase = models.ForeignKey(Phase)
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+    class Meta:
+        verbose_name = _('KPI')
+        verbose_name_plural = _('KPIs')
+
+    def embed_url(self):
+        """
+        Build URL to get to this dataset in OS Viewer
+        :return: URL string
+        """
+        url = '{kpi_host}/embed/?'.format(
+            kpi_host="http://localhost:5000",
+
+        )
+        params = {
+            'lang': "en",
+            'phase': self.phase.url,
+            'year': self.year.url,
+            'organization': self.organization.url
+        }
+        return '{}{}'.format(url, urllib.parse.urlencode(params))
+
+
 class Municipality(models.Model):
     name = models.CharField(max_length=200, verbose_name=_('Name'))
     country = models.CharField(max_length=200, verbose_name=_('Country'))
@@ -63,6 +142,8 @@ class Microsite(models.Model):
                                         'datasets list, forum on flip'),))
     stacked_datasets = models.BooleanField(verbose_name=_('Stacked Datasets'),
                                            default=False)
+    kpi_set = models.ManyToManyField(KPI)
+
     render_from = models.CharField(max_length=200,
                                    default='OpenSpending',
                                    choices=(('OpenSpending', 'OpenSpending'),
