@@ -32,8 +32,8 @@ urlpatterns = [
     url(r'^vizmanager/', include('vizmanager.urls', namespace='vizmanager')),
 ]
 
-urlpatterns += staticfiles_urlpatterns()
-
 urlpatterns = [
     url(r'^{}/'.format(settings.HOST_PREFIX), include(urlpatterns))
 ]
+
+urlpatterns += staticfiles_urlpatterns()

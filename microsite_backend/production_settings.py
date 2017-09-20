@@ -129,9 +129,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
-STATIC_URL = '/static/'
-
 HOST_PREFIX = 'microsite'
+STATIC_URL = '{}/static/'.format(HOST_PREFIX)
 
 # Open Spending
 try:  # using Docker
