@@ -17,12 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from vizmanager.admin import ma_site
+from microsite_backend import settings
 import vizmanager
 
 
 admin.site.site_header = 'OpenBudgets Microsite Manager'
 admin.site.site_title = 'Microsite Manager'
 admin.site.index_title = 'Microsite Manager'
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -31,3 +33,7 @@ urlpatterns = [
 ]
 
 urlpatterns += staticfiles_urlpatterns()
+
+urlpatterns = [
+    url(r'^{}/'.format(settings.HOST_PREFIX), include(urlpatterns))
+]

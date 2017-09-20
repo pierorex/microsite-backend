@@ -128,6 +128,8 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
+HOST_PREFIX = 'microsite'
+
 # Open Spending
 try:  # using Docker
     OS_VIEWER_THEMES_FOLDER = os.environ['OS_VIEWER_THEMES_FOLDER']
