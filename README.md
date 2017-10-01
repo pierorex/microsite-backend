@@ -7,7 +7,7 @@ and countries.
 ## For Administrators
 ### Create users for municipalities
 - To create a new user for a municipality, follow these steps:
-  - Go to the administration site (http://<your-url>/admin)
+  - Go to the administration site (http://\<your-url\>/admin)
   - Log in with admin credentials
   - Create User:
     - Click "Add" in the User section.
