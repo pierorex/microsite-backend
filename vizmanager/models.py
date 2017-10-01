@@ -125,7 +125,8 @@ class Microsite(models.Model):
                                        related_name='mock_microsite')
     language = models.CharField(max_length=2, default='en',
                                 choices=(('en', 'en'), ('de', 'de'),
-                                         ('es', 'es'),),
+                                         ('es', 'es'),
+                                         ('el', 'el'),),
                                 verbose_name=_('Language'))
     forum_platform = models.CharField(max_length=20, default='Disqus',
                                       verbose_name=_('Forum'),
