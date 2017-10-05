@@ -3,6 +3,8 @@ from django import forms
 
 from dal import autocomplete
 
+from vizmanager import strings
+
 
 class DatasetForm(forms.ModelForm):
     # Change the code field of Dataset to be rendered as autocomplete field
@@ -18,16 +20,23 @@ class DatasetForm(forms.ModelForm):
     )
 
     def build_dimension_choices(self):
-        references = []
+        dimensions = []
 
         for dim_name, dim_dict in self.instance.get_dimensions().items():
             for attr_name, attr_dict in dim_dict.get('attributes').items():
-                references.append(attr_dict.get('ref'))
+                dimensions.append(attr_dict.get('ref'))
 
-        return zip(references, references)
+        if not dimensions:
+            dimensions = [strings.DEFAULT_DIMENSIONS_STRING]
+
+        return zip(dimensions, dimensions)
 
     def build_measure_choices(self):
         measures = self.instance.get_measures()
+
+        if not measures:
+            measures = [strings.DEFAULT_MEASURES_STRING]
+
         return zip(measures, measures)
 
     def __init__(self, *args, **kwargs):
@@ -49,11 +58,10 @@ class DatasetForm(forms.ModelForm):
 
 
 class OrganizationForm(forms.ModelForm):
-
     """
     Initialize the DatasetForm code if the form is not empty
     """
-    def  __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(OrganizationForm, self).__init__(*args, **kwargs)
         ds = kwargs.get('instance')
         if ds is not None:
@@ -68,7 +76,7 @@ class OrganizationForm(forms.ModelForm):
         widget=autocomplete.ListSelect2(
             url='vizmanager:organization-autocomplete',
             attrs={
-                'data-placeholder':_('Click to load an Organization...'),
+                'data-placeholder': _('Click to load an Organization...'),
                 'data-minimum-input-length': 1
             }
         )
@@ -76,11 +84,10 @@ class OrganizationForm(forms.ModelForm):
 
 
 class YearForm(forms.ModelForm):
-
     """
     Initialize the DatasetForm code if the form is not empty
     """
-    def  __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(YearForm, self).__init__(*args, **kwargs)
         ds = kwargs.get('instance')
         if ds is not None:
@@ -95,7 +102,7 @@ class YearForm(forms.ModelForm):
         widget=autocomplete.ListSelect2(
             url='vizmanager:year-autocomplete',
             attrs={
-                'data-placeholder':_('Click to pick a Year...'),
+                'data-placeholder': _('Click to pick a Year...'),
                 'data-minimum-input-length': 1
             }
         )
@@ -103,11 +110,10 @@ class YearForm(forms.ModelForm):
 
 
 class PhaseForm(forms.ModelForm):
-
     """
     Initialize the DatasetForm code if the form is not empty
     """
-    def  __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(PhaseForm, self).__init__(*args, **kwargs)
         ds = kwargs.get('instance')
         if ds is not None:
@@ -122,9 +128,8 @@ class PhaseForm(forms.ModelForm):
         widget=autocomplete.ListSelect2(
             url='vizmanager:phase-autocomplete',
             attrs={
-                'data-placeholder':_('Click to pick a Phase...'),
+                'data-placeholder': _('Click to pick a Phase...'),
                 'data-minimum-input-length': 1
             }
         )
     )
-
