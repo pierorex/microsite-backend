@@ -51,7 +51,7 @@ class DatasetForm(forms.ModelForm):
 class OrganizationForm(forms.ModelForm):
 
     """
-    Initialialize the DatasetForm code if the form is not empty
+    Initialize the DatasetForm code if the form is not empty
     """
     def  __init__(self, *args, **kwargs):
         super(OrganizationForm, self).__init__(*args, **kwargs)
@@ -78,7 +78,7 @@ class OrganizationForm(forms.ModelForm):
 class YearForm(forms.ModelForm):
 
     """
-    Initialialize the DatasetForm code if the form is not empty
+    Initialize the DatasetForm code if the form is not empty
     """
     def  __init__(self, *args, **kwargs):
         super(YearForm, self).__init__(*args, **kwargs)
@@ -105,7 +105,7 @@ class YearForm(forms.ModelForm):
 class PhaseForm(forms.ModelForm):
 
     """
-    Initialialize the DatasetForm code if the form is not empty
+    Initialize the DatasetForm code if the form is not empty
     """
     def  __init__(self, *args, **kwargs):
         super(PhaseForm, self).__init__(*args, **kwargs)
