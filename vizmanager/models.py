@@ -309,6 +309,7 @@ class Dataset(ModelDiffMixin, models.Model):
                 self.code = old_value
         except TypeError:
             pass
+
         super(self.__class__, self).save(*args, **kwargs)
 
     def embed_url(self):
@@ -374,12 +375,27 @@ class Dataset(ModelDiffMixin, models.Model):
         # if the OS model has not been downloaded yet, download it now and
         # return it, otherwise just return the saved version
         try:
+            # os_model is already downloaded for this dataset
             return self.os_model
         except AttributeError:
+            # os_model is not yet downloaded for this dataset
+
+            if self.code == '':
+                # missing code, just return an empty/default os_model
+                self.os_model = {
+                    'dimensions': {},
+                    'measures': {},
+                    'hierarchies': {}
+                }
+                return self.os_model
+
+            # dataset with code, let's download the os_model
             response = requests.get(self.os_model_url())
             if response.status_code == 200:
                 self.os_model = response.json().get('model')
             else:
+                # response from babbage API got an error, probably it doesn't
+                # contain this dataset's code
                 raise RuntimeError(
                     'The configured OS_API is not working for this dataset.\n'
                     'Please check the settings.py file.\n'
