@@ -52,7 +52,8 @@ class DatasetAdmin(admin.ModelAdmin):
         qs = super(self.__class__, self).get_queryset(request)
         if request.user.is_superuser:
             return qs
-        return qs.filter(microsite__municipality=request.user.profile.municipality)
+        return qs\
+            .filter(microsite__municipality=request.user.profile.municipality)
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # Restrict select box to only show microsites related to the same
@@ -63,7 +64,8 @@ class DatasetAdmin(admin.ModelAdmin):
         if db_field.name == 'microsite':
             kwargs['queryset'] = Microsite.objects.filter(
                 municipality=request.user.profile.municipality)
-        return super(self.__class__, self).formfield_for_foreignkey(db_field, request, **kwargs)
+        return super(self.__class__, self)\
+            .formfield_for_foreignkey(db_field, request, **kwargs)
 
     class Meta:
         model = Dataset
@@ -82,7 +84,6 @@ class ThemeAdmin(admin.ModelAdmin):
             'fields': ('brand_color', 'sidebar_color', 'content_color'),
         }),
     )
-
 
     def get_queryset(self, request):
         # Restrict queryset to only show Themes belonging to the same
@@ -113,8 +114,8 @@ class MicrositeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'municipality', 'selected_theme', 'language',
                     'forum_platform', 'layout', 'stacked_datasets',
                     'render_from')
-    list_editable = ('name', 'selected_theme', 'language', 'forum_platform', 'layout',
-                     'stacked_datasets', 'render_from')
+    list_editable = ('name', 'selected_theme', 'language', 'forum_platform',
+                     'layout', 'stacked_datasets', 'render_from')
     readonly_fields = ('id', )
 
     def get_queryset(self, request):
@@ -161,7 +162,7 @@ class KPIAdmin(admin.ModelAdmin):
 
 class OrganizationAdmin(admin.ModelAdmin):
     form = OrganizationForm
-    list_display= ('url', 'name',)
+    list_display = ('url', 'name',)
     list_editable = ('name', )
 
     class Meta:
@@ -170,7 +171,7 @@ class OrganizationAdmin(admin.ModelAdmin):
 
 class YearAdmin(admin.ModelAdmin):
     form = YearForm
-    list_display= ('url', 'name',)
+    list_display = ('url', 'name',)
     list_editable = ('name', )
 
     class Meta:
@@ -179,7 +180,7 @@ class YearAdmin(admin.ModelAdmin):
 
 class PhaseAdmin(admin.ModelAdmin):
     form = PhaseForm
-    list_display= ('url', 'name',)
+    list_display = ('url', 'name',)
     list_editable = ('name', )
 
     class Meta:
