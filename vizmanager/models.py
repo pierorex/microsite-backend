@@ -143,7 +143,7 @@ class Microsite(models.Model):
                                         'datasets list, forum on flip'),))
     stacked_datasets = models.BooleanField(verbose_name=_('Stacked Datasets'),
                                            default=False)
-    kpi_set = models.ManyToManyField(KPI)
+    kpi_set = models.ManyToManyField(KPI, blank=True)
 
     render_from = models.CharField(max_length=200,
                                    default='OpenSpending',
